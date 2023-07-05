@@ -1,0 +1,13 @@
+{
+  "version": "2",
+  "remote": {
+    "https://deno.land/x/fluent_gitlab_ci@v0.3.2/mod.ts": "3becefe569f5c9814dffa1b534794a42b948481753a5903fa1b48d5337206ced",
+    "https://deno.land/x/fluent_gitlab_ci@v0.3.2/src/environment.ts": "f12ee4fb50e5100fccec29dc1d35aa430bfe8373e84286a8ab9f7b8e178f14e3",
+    "https://deno.land/x/fluent_gitlab_ci@v0.3.2/src/gitlabci.ts": "85d2335622c2def4a9554a9d8b8de4e62156f5d76d59a553e157bab4e6b6591f",
+    "https://deno.land/x/fluent_gitlab_ci@v0.3.2/src/gitlabci_spec.ts": "b60f40ecf26d243db2391aee70fdf71b133de3faaf789052020f58f98cf1b500",
+    "https://deno.land/x/fluent_gitlab_ci@v0.3.2/src/index.ts": "b5e374a24e3bca1d6fead0861f2c1b1e09e087a17e59297263f681ee71c972fe",
+    "https://deno.land/x/fluent_gitlab_ci@v0.3.2/src/job.ts": "a1ddf8d37ca33239de9d2c61f98835e585f6671748b37af8d647ebba5e1a9974",
+    "https://esm.sh/v126/yaml@2.3.1/denonext/yaml.mjs": "9fcc7926d1e209ab150017431a3c3fa785917d679e306c2008cf27c49a83fc54",
+    "https://esm.sh/yaml@v2.3.1": "b25360169240c095986f53055447582cc1b008f646c213e27db61d2a8fc2c010"
+  }
+}
