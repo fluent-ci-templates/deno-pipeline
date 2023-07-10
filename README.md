@@ -61,7 +61,7 @@ test:
 ## 🧪 Advanced Usage
 
 This package also provides a ready-to-use pipeline for
-[Dagger](https://dagger.io/):
+[Dagger](https://dagger.io/), just run the following command on your Deno project:
 
 ```sh
 dagger run deno run -A https://deno.land/x/deno_pipeline/ci.ts
