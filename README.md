@@ -22,7 +22,7 @@ fluentci init -t deno
 
 This will create a `.fluentci` folder in your project.
 
-And run the following command to start the pipeline:
+Now you can run the pipeline with:
 
 ```bash
 dagger run fluentci .
