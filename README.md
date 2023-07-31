@@ -20,6 +20,12 @@ Or, if you want to use it as a template:
 fluentci init -t deno
 ```
 
+And run the following command to start the pipeline:
+
+```bash
+dagger run fluentci .
+```
+
 This will create a `.fluentci` folder in your project.
 
 ## Jobs
