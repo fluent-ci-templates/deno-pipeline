@@ -35,3 +35,22 @@ dagger run fluentci .
 | fmt   | Format your code |
 | lint  | Lint your code   |
 | test  | Run your tests   |
+
+## Programmatic usage
+
+You can also use this pipeline programmatically:
+
+```ts
+import Client, { connect } from "@dagger.io/dagger";
+import { Dagger } from "https://deno.land/x/deno_pipeline/mod.ts";
+
+const { fmt, lint, test } = Dagger;
+
+export default function pipeline(src = ".") {
+  connect(async (client: Client) => {
+    await fmt(client, src);
+    await lint(client, src);
+    await test(client, src);
+  });
+}
+```
