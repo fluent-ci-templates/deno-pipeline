@@ -46,11 +46,13 @@ import { Dagger } from "https://deno.land/x/deno_pipeline/mod.ts";
 
 const { fmt, lint, test } = Dagger;
 
-export default function pipeline(src = ".") {
+function pipeline(src = ".") {
   connect(async (client: Client) => {
     await fmt(client, src);
     await lint(client, src);
     await test(client, src);
   });
 }
+
+pipeline();
 ```
