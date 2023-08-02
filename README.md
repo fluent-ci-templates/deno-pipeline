@@ -30,11 +30,11 @@ dagger run fluentci .
 
 ## Jobs
 
-| Job   | Description      |
-| ----- | ---------------- |
-| fmt   | Format your code |
-| lint  | Lint your code   |
-| test  | Run your tests   |
+| Job   | Description      | Options                |
+| ----- | ---------------- | ---------------------- |
+| fmt   | Format your code |                        |
+| lint  | Lint your code   |                        |
+| test  | Run your tests   | `{ ignore: string[] }` |
 
 ## Programmatic usage
 

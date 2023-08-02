@@ -6,7 +6,7 @@ export const lint = async (client: Client, src = ".") => {
   let command = ["deno", "lint"];
 
   if (existsSync("devbox.json")) {
-    command = ["sh", "-c", "devbox run -- deno lint"];
+    command = ["sh", "-c", `devbox run -- ${command.join(" ")}`];
   }
 
   const ctr = client
@@ -29,7 +29,7 @@ export const fmt = async (client: Client, src = ".") => {
   let command = ["deno", "fmt"];
 
   if (existsSync("devbox.json")) {
-    command = ["sh", "-c", "devbox run -- deno fmt"];
+    command = ["sh", "-c", `devbox run -- ${command.join(" ")}`];
   }
 
   const ctr = client
@@ -47,12 +47,20 @@ export const fmt = async (client: Client, src = ".") => {
   console.log(result);
 };
 
-export const test = async (client: Client, src = ".") => {
+export const test = async (
+  client: Client,
+  src = ".",
+  options: { ignore: string[] } = { ignore: [] }
+) => {
   const context = client.host().directory(src);
   let command = ["deno", "test", "-A", "--lock-write"];
 
+  if (options.ignore.length > 0) {
+    command = command.concat([`--ignore=${options.ignore.join(",")}`]);
+  }
+
   if (existsSync("devbox.json")) {
-    command = ["sh", "-c", "devbox run -- deno test -A --lock-write"];
+    command = ["sh", "-c", `devbox run -- ${command.join(" ")}`];
   }
 
   const ctr = client
