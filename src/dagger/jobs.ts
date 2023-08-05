@@ -1,6 +1,12 @@
 import Client from "@dagger.io/dagger";
 import { existsSync } from "fs";
 
+export enum Job {
+  fmt = "fmt",
+  lint = "lint",
+  test = "test",
+}
+
 export const lint = async (client: Client, src = ".") => {
   const context = client.host().directory(src);
   let command = ["deno", "lint"];
@@ -10,7 +16,7 @@ export const lint = async (client: Client, src = ".") => {
   }
 
   const ctr = client
-    .pipeline("lint")
+    .pipeline(Job.lint)
     .container()
     .from("denoland/deno:alpine")
     .withDirectory("/app", context, {
@@ -33,7 +39,7 @@ export const fmt = async (client: Client, src = ".") => {
   }
 
   const ctr = client
-    .pipeline("fmt")
+    .pipeline(Job.fmt)
     .container()
     .from("denoland/deno:alpine")
     .withDirectory("/app", context, {
@@ -64,7 +70,7 @@ export const test = async (
   }
 
   const ctr = client
-    .pipeline("test")
+    .pipeline(Job.test)
     .container()
     .from("denoland/deno:alpine")
     .withDirectory("/app", context, {
@@ -77,4 +83,29 @@ export const test = async (
   const result = await ctr.stdout();
 
   console.log(result);
+};
+
+export type JobExec = (
+  client: Client,
+  src?: string
+) =>
+  | Promise<void>
+  | ((
+      client: Client,
+      src?: string,
+      options?: {
+        ignore: string[];
+      }
+    ) => Promise<void>);
+
+export const runnableJobs: Record<Job, JobExec> = {
+  [Job.fmt]: fmt,
+  [Job.lint]: lint,
+  [Job.test]: test,
+};
+
+export const jobDescriptions: Record<Job, string> = {
+  [Job.fmt]: "Format your code",
+  [Job.lint]: "Lint your code",
+  [Job.test]: "Run your tests",
 };
