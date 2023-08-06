@@ -30,12 +30,13 @@ dagger run fluentci .
 
 ## Environment variables (Deno Deploy)
 
-| Variable          | Description               | Default |
-| ----------------- | ------------------------- | ------- |
-| DENO_PROJECT      | Your project name         |         |
-| NO_STATIC         | Disable static assets     | `false` |
-| EXCLUDE           | Exclude files from deploy |         |
-| DENO_DEPLOY_TOKEN | Your Deno Deploy token    |         |
+| Variable          | Description               | Default    |
+| ----------------- | ------------------------- | ---------- |
+| DENO_PROJECT      | Your project name         |            |
+| NO_STATIC         | Disable static assets     | `false`    |
+| EXCLUDE           | Exclude files from deploy |            |
+| DENO_DEPLOY_TOKEN | Your Deno Deploy token    |            |
+| DENO_MAIN_SCRIPT  | Your main script          | `main.tsx` |
 
 ## Jobs
 

@@ -95,11 +95,7 @@ export const test = async (
   console.log(result);
 };
 
-export const deploy = async (
-  client: Client,
-  src = ".",
-  script = "main.tsx"
-) => {
+export const deploy = async (client: Client, src = ".") => {
   const context = client.host().directory(src);
   let installDeployCtl = [
     "deno",
@@ -132,6 +128,7 @@ export const deploy = async (
     throw new Error("DENO_PROJECT environment variable is not set");
   }
 
+  const script = Deno.env.get("DENO_MAIN_SCRIPT") || "main.tsx";
   command = command.concat([`--project=${project}`, script]);
 
   if (existsSync("devbox.json")) {
@@ -151,6 +148,10 @@ export const deploy = async (
     .withWorkdir("/app")
     .withEnvVariable("PATH", "/root/.deno/bin:$PATH", { expand: true })
     .withEnvVariable("DENO_DEPLOY_TOKEN", Deno.env.get("DENO_DEPLOY_TOKEN")!)
+    .withEnvVariable(
+      "DENO_MAIN_SCRIPT",
+      Deno.env.get("DENO_MAIN_SCRIPT") || "main.tsx"
+    )
     .withExec(installDeployCtl)
     .withExec(command);
 
