@@ -28,23 +28,13 @@ Now you can run the pipeline with:
 dagger run fluentci .
 ```
 
-## Environment variables (Deno Deploy)
-
-| Variable          | Description               | Default |
-| ----------------- | ------------------------- | ------- |
-| DENO_PROJECT      | Your project name         |         |
-| NO_STATIC         | Disable static assets     | `false` |
-| EXCLUDE           | Exclude files from deploy |         |
-| DENO_DEPLOY_TOKEN | Your Deno Deploy token    |         |
-
 ## Jobs
 
-| Job    | Description                    | Options                |
-| ------ | ------------------------------ | ---------------------- |
-| fmt    | Format your code               |                        |
-| lint   | Lint your code                 |                        |
-| test   | Run your tests                 | `{ ignore: string[] }` |
-| deploy | Deploy your app to Deno Deploy |                        |
+| Job   | Description      | Options                |
+| ----- | ---------------- | ---------------------- |
+| fmt   | Format your code |                        |
+| lint  | Lint your code   |                        |
+| test  | Run your tests   | `{ ignore: string[] }` |
 
 ## Programmatic usage
 
