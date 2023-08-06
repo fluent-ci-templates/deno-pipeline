@@ -5,6 +5,20 @@
     "https://deno.land/std@0.150.0/media_types/mod.ts": "2d4b6f32a087029272dc59e0a55ae3cc4d1b27b794ccf528e94b1925795b3118",
     "https://deno.land/std@0.150.0/media_types/vendor/mime-db.v1.52.0.ts": "724cee25fa40f1a52d3937d6b4fbbfdd7791ff55e1b7ac08d9319d5632c7f5af",
     "https://deno.land/std@0.191.0/fmt/colors.ts": "d67e3cd9f472535241a8e410d33423980bec45047e343577554d3356e1f0ef4e",
+    "https://deno.land/x/deno_pipeline@v0.1.6/mod.ts": "60bbaf1da28b5324666c42469dc19ca15114956f98c2854a02073ed83c02284f",
+    "https://deno.land/x/deno_pipeline@v0.1.6/src/dagger/index.ts": "931aa6591bb4bc9fff073728a413079d4167239e78a7ddaa9ae4ab7f4a96e365",
+    "https://deno.land/x/deno_pipeline@v0.1.6/src/dagger/jobs.ts": "a9fdcc73f7311a6938a1e1cc25aa551da9e7e224adab4a51913c70203f129fa2",
+    "https://deno.land/x/deno_pipeline@v0.1.6/src/dagger/list_jobs.ts": "bd456bb239afa8a77fa0a56d398c611a7665236af8ac23696400ac61ac426f7d",
+    "https://deno.land/x/deno_pipeline@v0.1.6/src/dagger/pipeline.ts": "41c0db6f944db4dfef43762532e949e2b2593cce11745dd1d4923da6d1c9f336",
+    "https://deno.land/x/deno_pipeline@v0.1.6/src/gitlab/index.ts": "931aa6591bb4bc9fff073728a413079d4167239e78a7ddaa9ae4ab7f4a96e365",
+    "https://deno.land/x/deno_pipeline@v0.1.6/src/gitlab/jobs.ts": "c86cd5df6f1528d26e5405446ea134dd8c5e2d112ee6ea8eb59a8511fcb66dc6",
+    "https://deno.land/x/deno_pipeline@v0.1.6/src/gitlab/pipeline.ts": "4e873cfaf4a5c9fc96435fb2da6fc86599c56e5004d83a5ed74dfab38ceb6e76",
+    "https://deno.land/x/fluent_gitlab_ci@v0.3.2/mod.ts": "3becefe569f5c9814dffa1b534794a42b948481753a5903fa1b48d5337206ced",
+    "https://deno.land/x/fluent_gitlab_ci@v0.3.2/src/environment.ts": "f12ee4fb50e5100fccec29dc1d35aa430bfe8373e84286a8ab9f7b8e178f14e3",
+    "https://deno.land/x/fluent_gitlab_ci@v0.3.2/src/gitlabci.ts": "85d2335622c2def4a9554a9d8b8de4e62156f5d76d59a553e157bab4e6b6591f",
+    "https://deno.land/x/fluent_gitlab_ci@v0.3.2/src/gitlabci_spec.ts": "b60f40ecf26d243db2391aee70fdf71b133de3faaf789052020f58f98cf1b500",
+    "https://deno.land/x/fluent_gitlab_ci@v0.3.2/src/index.ts": "b5e374a24e3bca1d6fead0861f2c1b1e09e087a17e59297263f681ee71c972fe",
+    "https://deno.land/x/fluent_gitlab_ci@v0.3.2/src/job.ts": "a1ddf8d37ca33239de9d2c61f98835e585f6671748b37af8d647ebba5e1a9974",
     "https://deno.land/x/nix_installer_pipeline@v0.3.6/src/dagger/steps.ts": "a34aea3753c7079de5877f592ce31f30d05d552155729ff3e695d77326405133",
     "https://deno.land/x/xhr@0.3.0/mod.ts": "094aacd627fd9635cd942053bf8032b5223b909858fa9dc8ffa583752ff63b20",
     "https://esm.sh/stringify-tree@1.1.1": "8d994a105481fa944515323d89bd2596c1de79f3d9bd1386266463934716eca0",
@@ -62,6 +76,8 @@
     "https://esm.sh/v128/which@2.0.2/denonext/which.mjs": "86bf76e4937edb7fa3464d7bb9a426ef273684d1cefbec5ba5f1bdcb5cafff91",
     "https://esm.sh/v128/yallist@4.0.0/denonext/yallist.mjs": "61f180d807dda50bac17028eda05d5722a3fecef6e98a9064e2353ea6864fd82",
     "https://esm.sh/v130/lodash.flatten@4.4.0/denonext/lodash.flatten.mjs": "8e86ab607deea15cc3c1acfb5eae278ecbc5b80f24167b4e8f4c56df3278cd55",
-    "https://esm.sh/v130/stringify-tree@1.1.1/denonext/stringify-tree.mjs": "40a9d40e0282b5432302a3da68b88aa11685bc0b8a0b70246168deed5c5773fe"
+    "https://esm.sh/v130/stringify-tree@1.1.1/denonext/stringify-tree.mjs": "40a9d40e0282b5432302a3da68b88aa11685bc0b8a0b70246168deed5c5773fe",
+    "https://esm.sh/v130/yaml@2.3.1/denonext/yaml.mjs": "71f677b4bfc69271af9d98db5194e354f9a1863955e208e26d32a9ef78bd89f5",
+    "https://esm.sh/yaml@v2.3.1": "9f8730b9d2fdb4d9320be0c0e62d57936097826342588991d561ae35555aca55"
   }
 }
