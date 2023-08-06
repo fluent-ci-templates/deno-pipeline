@@ -10,9 +10,12 @@
     "https://deno.land/x/deno_pipeline@v0.1.6/src/dagger/jobs.ts": "a9fdcc73f7311a6938a1e1cc25aa551da9e7e224adab4a51913c70203f129fa2",
     "https://deno.land/x/deno_pipeline@v0.1.6/src/dagger/list_jobs.ts": "bd456bb239afa8a77fa0a56d398c611a7665236af8ac23696400ac61ac426f7d",
     "https://deno.land/x/deno_pipeline@v0.1.6/src/dagger/pipeline.ts": "41c0db6f944db4dfef43762532e949e2b2593cce11745dd1d4923da6d1c9f336",
+    "https://deno.land/x/deno_pipeline@v0.1.6/src/dagger/runner.ts": "9973f8349af5c9d6335b6b5bf68547363ef41e74a6cdc54b129987fc22b830d2",
     "https://deno.land/x/deno_pipeline@v0.1.6/src/gitlab/index.ts": "931aa6591bb4bc9fff073728a413079d4167239e78a7ddaa9ae4ab7f4a96e365",
     "https://deno.land/x/deno_pipeline@v0.1.6/src/gitlab/jobs.ts": "c86cd5df6f1528d26e5405446ea134dd8c5e2d112ee6ea8eb59a8511fcb66dc6",
     "https://deno.land/x/deno_pipeline@v0.1.6/src/gitlab/pipeline.ts": "4e873cfaf4a5c9fc96435fb2da6fc86599c56e5004d83a5ed74dfab38ceb6e76",
+    "https://deno.land/x/deno_pipeline@v0.1.7/src/dagger/jobs.ts": "a9fdcc73f7311a6938a1e1cc25aa551da9e7e224adab4a51913c70203f129fa2",
+    "https://deno.land/x/deno_pipeline@v0.1.7/src/dagger/list_jobs.ts": "bd456bb239afa8a77fa0a56d398c611a7665236af8ac23696400ac61ac426f7d",
     "https://deno.land/x/fluent_gitlab_ci@v0.3.2/mod.ts": "3becefe569f5c9814dffa1b534794a42b948481753a5903fa1b48d5337206ced",
     "https://deno.land/x/fluent_gitlab_ci@v0.3.2/src/environment.ts": "f12ee4fb50e5100fccec29dc1d35aa430bfe8373e84286a8ab9f7b8e178f14e3",
     "https://deno.land/x/fluent_gitlab_ci@v0.3.2/src/gitlabci.ts": "85d2335622c2def4a9554a9d8b8de4e62156f5d76d59a553e157bab4e6b6591f",
@@ -79,5 +82,16 @@
     "https://esm.sh/v130/stringify-tree@1.1.1/denonext/stringify-tree.mjs": "40a9d40e0282b5432302a3da68b88aa11685bc0b8a0b70246168deed5c5773fe",
     "https://esm.sh/v130/yaml@2.3.1/denonext/yaml.mjs": "71f677b4bfc69271af9d98db5194e354f9a1863955e208e26d32a9ef78bd89f5",
     "https://esm.sh/yaml@v2.3.1": "9f8730b9d2fdb4d9320be0c0e62d57936097826342588991d561ae35555aca55"
+  },
+  "npm": {
+    "specifiers": {
+      "@types/node": "@types/node@18.16.19"
+    },
+    "packages": {
+      "@types/node@18.16.19": {
+        "integrity": "sha512-IXl7o+R9iti9eBW4Wg2hx1xQDig183jj7YLn8F7udNceyfkbn1ZxmzZXuak20gR40D7pIkIY1kYGx5VIGbaHKA==",
+        "dependencies": {}
+      }
+    }
   }
 }
