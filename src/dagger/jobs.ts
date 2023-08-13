@@ -71,7 +71,7 @@ export const test = async (
   options: { ignore: string[] } = { ignore: [] }
 ) => {
   const context = client.host().directory(src);
-  let command = ["deno", "test", "-A", "--lock-write"];
+  let command = ["deno", "test", "-A", "--coverage=coverage", "--lock-write"];
 
   if (options.ignore.length > 0) {
     command = command.concat([`--ignore=${options.ignore.join(",")}`]);
@@ -88,7 +88,10 @@ export const test = async (
     })
     .withWorkdir("/app")
     .withMountedCache("/root/.cache/deno", client.cacheVolume("deno-cache"))
-    .withExec(command);
+    .withExec(command)
+    .withExec(["sh", "-c", "deno coverage ./coverage --lcov > coverage.lcov"]);
+
+  await ctr.file("/app/coverage.lcov").export("./coverage.lcov");
 
   const result = await ctr.stdout();
 
