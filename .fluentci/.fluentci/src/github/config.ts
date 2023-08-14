@@ -38,11 +38,7 @@ export function generateYaml() {
       },
       {
         name: "Run Dagger Pipelines",
-        run: "dagger run fluentci . fmt lint test",
-      },
-      {
-        name: "Upload to Codecov",
-        run: "dagger run fluentci codecov_pipeline",
+        run: "dagger run fluentci . fmt lint test codecov",
         env: {
           CODECOV_TOKEN: "${{ secrets.CODECOV_TOKEN }}",
         },
