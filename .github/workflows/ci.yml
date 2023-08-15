@@ -21,7 +21,7 @@ jobs:
             sudo mv bin/dagger /usr/local/bin
             dagger version
       - name: List Jobs
-        run: fluentci ls .
+        run: fluentci ls
       - name: Run Dagger Pipelines
         run: dagger run fluentci . fmt lint test
       - name: Upload to Codecov

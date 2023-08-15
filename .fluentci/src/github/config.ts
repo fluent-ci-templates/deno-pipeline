@@ -34,7 +34,7 @@ export function generateYaml() {
       },
       {
         name: "List Jobs",
-        run: "fluentci ls .",
+        run: "fluentci ls",
       },
       {
         name: "Run Dagger Pipelines",
