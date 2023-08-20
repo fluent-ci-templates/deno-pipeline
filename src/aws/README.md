@@ -7,7 +7,7 @@
 The following command will generate a `buildspec.yml` file in your project:
 
 ```bash
-fluentci ac init -t deno_pipeline fmt lint test
+fluentci ac init -t deno_pipeline
 ```
 
 Generated file:
