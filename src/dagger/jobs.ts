@@ -1,5 +1,4 @@
 import Client from "@dagger.io/dagger";
-import { upload } from "https://deno.land/x/codecov_pipeline@v0.1.0/src/dagger/jobs.ts";
 import { withDevbox } from "https://deno.land/x/nix_installer_pipeline@v0.3.6/src/dagger/steps.ts";
 import { existsSync } from "fs";
 
@@ -8,7 +7,6 @@ export enum Job {
   lint = "lint",
   test = "test",
   deploy = "deploy",
-  codecov = "codecov",
 }
 
 const baseCtr = (client: Client, pipeline: string) => {
@@ -178,14 +176,11 @@ export type JobExec = (
       }
     ) => Promise<void>);
 
-export const codecov = upload;
-
 export const runnableJobs: Record<Job, JobExec> = {
   [Job.fmt]: fmt,
   [Job.lint]: lint,
   [Job.test]: test,
   [Job.deploy]: deploy,
-  [Job.codecov]: upload,
 };
 
 export const jobDescriptions: Record<Job, string> = {
@@ -193,5 +188,4 @@ export const jobDescriptions: Record<Job, string> = {
   [Job.lint]: "Lint your code",
   [Job.test]: "Run your tests",
   [Job.deploy]: "Deploy your code to Deno Deploy",
-  [Job.codecov]: "Upload your code coverage to Codecov",
 };
