@@ -194,7 +194,12 @@
     "https://sdk.fluentci.io/v0.1.4/src/client.ts": "f44b27ae573b09d85089ce4e5c9a01c95926058fb41d26de23f0f6f5412ecf89",
     "https://sdk.fluentci.io/v0.1.4/src/connect.ts": "ddd4cbac2069427ad3b9106459207d63d392640f3c669c45b87e5049711dd338",
     "https://sdk.fluentci.io/v0.1.4/src/context.ts": "7e0503a6711526a1d11ef24579b340b0ad08587af138a137cacb85f7fe4ebf3f",
-    "https://sdk.fluentci.io/v0.1.4/src/utils.ts": "df9a823be6e127feb3e2e4261f3c0b3b31da888ba2bfc4b8b841ae4c2fcd3373"
+    "https://sdk.fluentci.io/v0.1.4/src/utils.ts": "df9a823be6e127feb3e2e4261f3c0b3b31da888ba2bfc4b8b841ae4c2fcd3373",
+    "https://sdk.fluentci.io/v0.1.5/mod.ts": "d04d9358605b672fc877e7ae8eaaef228773819e9c46bf581dd4a351b887ab7e",
+    "https://sdk.fluentci.io/v0.1.5/src/client.ts": "f44b27ae573b09d85089ce4e5c9a01c95926058fb41d26de23f0f6f5412ecf89",
+    "https://sdk.fluentci.io/v0.1.5/src/connect.ts": "ddd4cbac2069427ad3b9106459207d63d392640f3c669c45b87e5049711dd338",
+    "https://sdk.fluentci.io/v0.1.5/src/context.ts": "d711106c5f2dfb894d522d1541b18b0d81d47db603132070d6f743673924554b",
+    "https://sdk.fluentci.io/v0.1.5/src/utils.ts": "df9a823be6e127feb3e2e4261f3c0b3b31da888ba2bfc4b8b841ae4c2fcd3373"
   },
   "npm": {
     "specifiers": {
