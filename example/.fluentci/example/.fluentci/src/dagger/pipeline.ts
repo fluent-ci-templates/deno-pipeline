@@ -1,4 +1,4 @@
-import Client, { connect } from "@dagger.io/dagger";
+import Client, { connect } from "@fluentci.io/dagger";
 import * as jobs from "./jobs.ts";
 
 const { fmt, lint, test, runnableJobs } = jobs;
@@ -12,6 +12,7 @@ export default function pipeline(src = ".", args: string[] = []) {
 
     await fmt(client, src);
     await lint(client, src);
+    await test(client, src);
   });
 }
 
