@@ -53,7 +53,7 @@ dagger run fluentci .
 You can also use this pipeline programmatically:
 
 ```ts
-import Client, { connect } from "https://sdk.fluentci.io/latest/mod.ts";
+import Client, { connect } from "https://sdk.fluentci.io/v0.1.5/mod.ts";
 import { Dagger } from "https://deno.land/x/deno_pipeline/mod.ts";
 
 const { fmt, lint, test } = Dagger;
