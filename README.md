@@ -54,9 +54,7 @@ You can also use this pipeline programmatically:
 
 ```ts
 import Client, { connect } from "https://sdk.fluentci.io/v0.1.5/mod.ts";
-import { Dagger } from "https://deno.land/x/deno_pipeline/mod.ts";
-
-const { fmt, lint, test } = Dagger;
+import { fmt, lint, test } from "https://deno.land/x/deno_pipeline/mod.ts";
 
 function pipeline(src = ".") {
   connect(async (client: Client) => {
