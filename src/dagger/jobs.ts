@@ -1,6 +1,6 @@
-import Client from "@fluentci.io/dagger";
-import { withDevbox } from "https://deno.land/x/nix_installer_pipeline@v0.4.1/src/dagger/steps.ts";
-import { existsSync } from "fs";
+import Client from "../../deps.ts";
+import { withDevbox } from "../../deps.ts";
+import { existsSync } from "node:fs";
 
 export enum Job {
   fmt = "fmt",
