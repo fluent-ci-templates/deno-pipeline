@@ -28,7 +28,7 @@ dagger version`,
       {
         run: {
           name: "Run Dagger Pipelines",
-          command: "dagger run fluentci deno_pipeline fmt lint test",
+          command: "fluentci run deno_pipeline fmt lint test",
         },
       },
     ]);

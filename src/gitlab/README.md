@@ -41,7 +41,7 @@ Generated file:
 tests:
   extends: .dagger
   script:
-    - dagger run fluentci deno_pipeline fmt lint test
+    - fluentci run deno_pipeline fmt lint test
 
 ```
 

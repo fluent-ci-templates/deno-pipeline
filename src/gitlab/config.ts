@@ -25,7 +25,7 @@ export function generateYaml(): FluentGitlabCI.GitlabCI {
 
   const tests = new FluentGitlabCI.Job()
     .extends(".dagger")
-    .script("dagger run fluentci deno_pipeline fmt lint test");
+    .script("fluentci run deno_pipeline fmt lint test");
 
   return new FluentGitlabCI.GitlabCI()
     .addJob(".docker", docker)

@@ -15,7 +15,7 @@ export function generateYaml(): FluentAWSCodePipeline.BuildSpec {
       ],
     })
     .phase("build", {
-      commands: ["dagger run fluentci deno_pipeline fmt lint test"],
+      commands: ["fluentci run deno_pipeline fmt lint test"],
     })
     .phase("post_build", {
       commands: ["echo Build completed on `date`"],

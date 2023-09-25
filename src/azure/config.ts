@@ -34,7 +34,7 @@ export function generateYaml(): FluentAzurePipelines.AzurePipeline {
       displayName: "Setup Dagger",
     })
     .step({
-      script: "dagger run fluentci deno_pipeline fmt lint test",
+      script: "fluentci run deno_pipeline fmt lint test",
       displayName: "Run Dagger Pipelines",
     });
   return azurePipeline;
