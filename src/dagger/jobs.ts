@@ -1,6 +1,7 @@
 import Client from "../../deps.ts";
 import { withDevbox } from "../../deps.ts";
 import { existsSync } from "node:fs";
+import { client } from "./dagger.ts";
 
 export enum Job {
   fmt = "fmt",
@@ -11,7 +12,7 @@ export enum Job {
 
 export const exclude = [".git", ".devbox", ".fluentci"];
 
-const baseCtr = (client: Client, pipeline: string) => {
+const baseCtr = (pipeline: string) => {
   if (existsSync("devbox.json")) {
     return withDevbox(
       client
@@ -27,7 +28,7 @@ const baseCtr = (client: Client, pipeline: string) => {
   return client.pipeline(pipeline).container().from("denoland/deno:alpine");
 };
 
-export const lint = async (client: Client, src = ".") => {
+export const lint = async (src = ".") => {
   const context = client.host().directory(src);
   let command = ["deno", "lint"];
 
@@ -35,7 +36,7 @@ export const lint = async (client: Client, src = ".") => {
     command = ["sh", "-c", `devbox run -- ${command.join(" ")}`];
   }
 
-  const ctr = baseCtr(client, Job.lint)
+  const ctr = baseCtr(Job.lint)
     .withDirectory("/app", context, {
       exclude,
     })
@@ -44,10 +45,10 @@ export const lint = async (client: Client, src = ".") => {
 
   const result = await ctr.stdout();
 
-  console.log(result);
+  return result;
 };
 
-export const fmt = async (client: Client, src = ".") => {
+export const fmt = async (src = ".") => {
   const context = client.host().directory(src);
   let command = ["deno", "fmt"];
 
@@ -55,7 +56,7 @@ export const fmt = async (client: Client, src = ".") => {
     command = ["sh", "-c", `devbox run -- ${command.join(" ")}`];
   }
 
-  const ctr = baseCtr(client, Job.fmt)
+  const ctr = baseCtr(Job.fmt)
     .withDirectory("/app", context, {
       exclude,
     })
@@ -64,11 +65,10 @@ export const fmt = async (client: Client, src = ".") => {
 
   const result = await ctr.stdout();
 
-  console.log(result);
+  return result;
 };
 
 export const test = async (
-  client: Client,
   src = ".",
   options: { ignore: string[] } = { ignore: [] }
 ) => {
@@ -83,13 +83,13 @@ export const test = async (
     command = ["sh", "-c", `devbox run -- ${command.join(" ")}`];
   }
 
-  const ctr = baseCtr(client, Job.test)
+  const ctr = baseCtr(Job.test)
     .from("denoland/deno:alpine")
     .withDirectory("/app", context, {
       exclude,
     })
     .withWorkdir("/app")
-    .withMountedCache("/root/.cache/deno", client.cacheVolume("deno-cache"))
+    .withMountedCache("/deno-dir", client.cacheVolume("deno-cache"))
     .withExec(command)
     .withExec(["sh", "-c", "deno coverage ./coverage --lcov > coverage.lcov"]);
 
@@ -97,10 +97,10 @@ export const test = async (
 
   const result = await ctr.stdout();
 
-  console.log(result);
+  return result;
 };
 
-export const deploy = async (client: Client, src = ".") => {
+export const deploy = async (src = ".") => {
   const context = client.host().directory(src);
   let installDeployCtl = [
     "deno",
@@ -145,7 +145,7 @@ export const deploy = async (client: Client, src = ".") => {
     ];
   }
 
-  const ctr = baseCtr(client, Job.deploy)
+  const ctr = baseCtr(Job.deploy)
     .from("denoland/deno:alpine")
     .withDirectory("/app", context, {
       exclude,
@@ -162,21 +162,18 @@ export const deploy = async (client: Client, src = ".") => {
 
   const result = await ctr.stdout();
 
-  console.log(result);
+  return result;
 };
 
-export type JobExec = (
-  client: Client,
-  src?: string
-) =>
-  | Promise<void>
+export type JobExec = (src?: string) =>
+  | Promise<string>
   | ((
       client: Client,
       src?: string,
       options?: {
         ignore: string[];
       }
-    ) => Promise<void>);
+    ) => Promise<string>);
 
 export const runnableJobs: Record<Job, JobExec> = {
   [Job.fmt]: fmt,
