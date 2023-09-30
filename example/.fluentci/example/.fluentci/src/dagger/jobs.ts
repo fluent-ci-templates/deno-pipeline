@@ -9,6 +9,8 @@ export enum Job {
   deploy = "deploy",
 }
 
+export const exclude = [".git", ".devbox", ".fluentci"];
+
 const baseCtr = (client: Client, pipeline: string) => {
   if (existsSync("devbox.json")) {
     return withDevbox(
@@ -35,7 +37,7 @@ export const lint = async (client: Client, src = ".") => {
 
   const ctr = baseCtr(client, Job.lint)
     .withDirectory("/app", context, {
-      exclude: [".git", ".devbox", ".fluentci"],
+      exclude,
     })
     .withWorkdir("/app")
     .withExec(command);
@@ -55,10 +57,9 @@ export const fmt = async (client: Client, src = ".") => {
 
   const ctr = baseCtr(client, Job.fmt)
     .withDirectory("/app", context, {
-      exclude: [".git", ".devbox", ".fluentci"],
+      exclude,
     })
     .withWorkdir("/app")
-    .withExec(["ls", "-l"])
     .withExec(command);
 
   const result = await ctr.stdout();
@@ -85,7 +86,7 @@ export const test = async (
   const ctr = baseCtr(client, Job.test)
     .from("denoland/deno:alpine")
     .withDirectory("/app", context, {
-      exclude: [".git", ".devbox", ".fluentci"],
+      exclude,
     })
     .withWorkdir("/app")
     .withMountedCache("/root/.cache/deno", client.cacheVolume("deno-cache"))
@@ -112,7 +113,7 @@ export const deploy = async (client: Client, src = ".") => {
   ];
   const project = Deno.env.get("DENO_PROJECT");
   const noStatic = Deno.env.get("NO_STATIC");
-  const exclude = Deno.env.get("EXCLUDE");
+  const excludeOpt = Deno.env.get("EXCLUDE");
 
   let command = ["deployctl", "deploy"];
 
@@ -120,8 +121,8 @@ export const deploy = async (client: Client, src = ".") => {
     command = command.concat(["--no-static"]);
   }
 
-  if (exclude) {
-    command = command.concat([`--exclude=${exclude}`]);
+  if (excludeOpt) {
+    command = command.concat([`--exclude=${excludeOpt}`]);
   }
 
   if (!Deno.env.get("DENO_DEPLOY_TOKEN")) {
@@ -147,7 +148,7 @@ export const deploy = async (client: Client, src = ".") => {
   const ctr = baseCtr(client, Job.deploy)
     .from("denoland/deno:alpine")
     .withDirectory("/app", context, {
-      exclude: [".git", ".devbox", ".fluentci"],
+      exclude,
     })
     .withWorkdir("/app")
     .withEnvVariable("PATH", "/root/.deno/bin:$PATH", { expand: true })

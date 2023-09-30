@@ -34,7 +34,7 @@ steps:
         sudo mv bin/dagger /usr/local/bin
         dagger version
     displayName: Setup Dagger
-  - script: dagger run fluentci deno_pipeline fmt lint test
+  - script: fluentci run deno_pipeline fmt lint test
     displayName: Run Dagger Pipelines
 
 ```
