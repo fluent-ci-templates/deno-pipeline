@@ -8,7 +8,7 @@ import {
   nonNull,
 } from "../../deps.ts";
 
-import { fmt, lint, test, deploy } from "./jobs.ts";
+import { fmt, lint, test, deploy, compile } from "./jobs.ts";
 
 const Query = queryType({
   definition(t) {
@@ -33,8 +33,21 @@ const Query = queryType({
     t.string("deploy", {
       args: {
         src: nonNull(stringArg()),
+        token: nonNull(stringArg()),
+        project: nonNull(stringArg()),
+        main: nonNull(stringArg()),
+        noStatic: nonNull(stringArg()),
       },
       resolve: async (_root, args, _ctx) => await deploy(args.src),
+    });
+    t.string("compile", {
+      args: {
+        src: nonNull(stringArg()),
+        file: nonNull(stringArg()),
+        output: nonNull(stringArg()),
+        target: nonNull(stringArg()),
+      },
+      resolve: async (_root, args, _ctx) => await compile(args.src),
     });
   },
 });
