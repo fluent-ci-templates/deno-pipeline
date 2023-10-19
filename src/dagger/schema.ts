@@ -38,7 +38,14 @@ const Query = queryType({
         main: nonNull(stringArg()),
         noStatic: nonNull(stringArg()),
       },
-      resolve: async (_root, args, _ctx) => await deploy(args.src),
+      resolve: async (_root, args, _ctx) =>
+        await deploy(
+          args.src,
+          args.token,
+          args.project,
+          args.main,
+          args.noStatic
+        ),
     });
     t.string("compile", {
       args: {
@@ -47,7 +54,8 @@ const Query = queryType({
         output: nonNull(stringArg()),
         target: nonNull(stringArg()),
       },
-      resolve: async (_root, args, _ctx) => await compile(args.src),
+      resolve: async (_root, args, _ctx) =>
+        await compile(args.src, args.file, args.output, args.target),
     });
   },
 });
