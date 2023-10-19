@@ -12,6 +12,7 @@ export {
   arg,
   queryType,
   stringArg,
+  booleanArg,
   intArg,
   nonNull,
   makeSchema,

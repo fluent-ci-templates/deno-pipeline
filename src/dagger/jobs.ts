@@ -46,8 +46,9 @@ export const lint = async (src = ".") => {
       .withExec(command);
 
     result = await ctr.stdout();
+    console.log(result);
   });
-  return result;
+  return "Done";
 };
 
 export const fmt = async (src = ".") => {
@@ -68,9 +69,10 @@ export const fmt = async (src = ".") => {
       .withExec(command);
 
     result = await ctr.stdout();
+    console.log(result);
   });
 
-  return result;
+  return "Done";
 };
 
 export const test = async (
@@ -107,8 +109,9 @@ export const test = async (
     await ctr.file("/app/coverage.lcov").export("./coverage.lcov");
 
     result = await ctr.stdout();
+    console.log(result);
   });
-  return result;
+  return "Done";
 };
 
 export const compile = async (
@@ -146,9 +149,10 @@ export const compile = async (
     await ctr.file(`/app/${output}`).export(`./${output}`);
 
     result = await ctr.stdout();
+    console.log(result);
   });
 
-  return result;
+  return "Done";
 };
 
 export const deploy = async (
@@ -226,9 +230,10 @@ export const deploy = async (
       .withExec(command);
 
     result = await ctr.stdout();
+    console.log(result);
   });
 
-  return result;
+  return "Done";
 };
 
 export type JobExec = (src?: string) =>

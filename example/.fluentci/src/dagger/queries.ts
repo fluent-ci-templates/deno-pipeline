@@ -1,25 +1,25 @@
 import { gql } from "../../deps.ts";
 
 export const fmt = gql`
-  query Fmt($src: String!) {
+  query fmt($src: String!) {
     fmt(src: $src)
   }
 `;
 
 export const lint = gql`
-  query Lint($src: String!) {
+  query lint($src: String!) {
     lint(src: $src)
   }
 `;
 
 export const test = gql`
-  query Test($src: String!) {
+  query test($src: String!) {
     test(src: $src)
   }
 `;
 
 export const deploy = gql`
-  query Deploy(
+  query deploy(
     $src: String!
     $token: String!
     $project: String!
@@ -37,7 +37,7 @@ export const deploy = gql`
 `;
 
 export const compile = gql`
-  query Compile(
+  query compile(
     $src: String!
     $file: String!
     $output: String!

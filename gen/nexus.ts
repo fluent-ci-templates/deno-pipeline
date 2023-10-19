@@ -71,7 +71,7 @@ export interface NexusGenArgTypes {
     }
     deploy: { // args
       main: string; // String!
-      noStatic: string; // String!
+      noStatic: boolean; // Boolean!
       project: string; // String!
       src: string; // String!
       token: string; // String!

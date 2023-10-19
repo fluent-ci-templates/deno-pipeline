@@ -5,6 +5,7 @@ import {
   join,
   resolve,
   stringArg,
+  booleanArg,
   nonNull,
 } from "../../deps.ts";
 
@@ -36,7 +37,7 @@ const Query = queryType({
         token: nonNull(stringArg()),
         project: nonNull(stringArg()),
         main: nonNull(stringArg()),
-        noStatic: nonNull(stringArg()),
+        noStatic: nonNull(booleanArg()),
       },
       resolve: async (_root, args, _ctx) =>
         await deploy(
