@@ -20,4 +20,5 @@ jobs:
         run: |
           dagger query --doc lint.gql
           dagger query --doc fmt.gql
+          dagger query --doc compile.gql
         working-directory: example

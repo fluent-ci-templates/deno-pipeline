@@ -12,7 +12,6 @@ export default function pipeline(src = ".", args: string[] = []) {
 
     await fmt(client, src);
     await lint(client, src);
-    await test(client, src);
   });
 }
 

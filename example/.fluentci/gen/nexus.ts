@@ -43,6 +43,7 @@ export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars
 
 export interface NexusGenFieldTypes {
   Query: { // field return type
+    compile: string | null; // String
     deploy: string | null; // String
     fmt: string | null; // String
     lint: string | null; // String
@@ -52,6 +53,7 @@ export interface NexusGenFieldTypes {
 
 export interface NexusGenFieldTypeNames {
   Query: { // field return type name
+    compile: 'String'
     deploy: 'String'
     fmt: 'String'
     lint: 'String'
@@ -61,8 +63,18 @@ export interface NexusGenFieldTypeNames {
 
 export interface NexusGenArgTypes {
   Query: {
-    deploy: { // args
+    compile: { // args
+      file: string; // String!
+      output: string; // String!
       src: string; // String!
+      target: string; // String!
+    }
+    deploy: { // args
+      main: string; // String!
+      noStatic: string; // String!
+      project: string; // String!
+      src: string; // String!
+      token: string; // String!
     }
     fmt: { // args
       src: string; // String!

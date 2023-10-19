@@ -34,7 +34,7 @@ export function generateYaml(): Workflow {
       },
       {
         name: "Run Dagger Pipelines",
-        run: "dagger run fluentci deno_pipeline fmt lint test",
+        run: "fluentci run deno_pipeline fmt lint test",
       },
     ],
   };

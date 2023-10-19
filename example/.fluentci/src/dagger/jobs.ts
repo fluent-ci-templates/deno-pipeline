@@ -6,6 +6,7 @@ export enum Job {
   fmt = "fmt",
   lint = "lint",
   test = "test",
+  compile = "compile",
   deploy = "deploy",
 }
 
@@ -110,7 +111,54 @@ export const test = async (
   return result;
 };
 
-export const deploy = async (src = ".") => {
+export const compile = async (
+  src = ".",
+  file = "main.ts",
+  output = "main",
+  target = "x86_64-unknown-linux-gnu"
+) => {
+  let result = "";
+  await connect(async (client) => {
+    const context = client.host().directory(src);
+    let command = [
+      "deno",
+      "compile",
+      "-A",
+      "--output",
+      output,
+      "--target",
+      target,
+      file,
+    ];
+
+    if (existsSync("devbox.json")) {
+      command = ["sh", "-c", `devbox run -- ${command.join(" ")}`];
+    }
+
+    const ctr = baseCtr(client, Job.fmt)
+      .withDirectory("/app", context, {
+        exclude,
+      })
+      .withWorkdir("/app")
+      .withExec(command)
+      .withExec(["ls", "-ltr", "."]);
+
+    await ctr.file(`/app/${output}`).export(`./${output}`);
+
+    result = await ctr.stdout();
+  });
+
+  return result;
+};
+
+export const deploy = async (
+  src = ".",
+  token?: string,
+  project?: string,
+  main?: string,
+  noStatic?: boolean,
+  excludeOpt?: string
+) => {
   let result = "";
   await connect(async (client) => {
     const context = client.host().directory(src);
@@ -123,21 +171,20 @@ export const deploy = async (src = ".") => {
       "-f",
       "https://deno.land/x/deploy/deployctl.ts",
     ];
-    const project = Deno.env.get("DENO_PROJECT");
-    const noStatic = Deno.env.get("NO_STATIC");
-    const excludeOpt = Deno.env.get("EXCLUDE");
 
     let command = ["deployctl", "deploy"];
 
-    if (noStatic) {
+    if (Deno.env.get("NO_STATIC") || noStatic) {
       command = command.concat(["--no-static"]);
     }
 
-    if (excludeOpt) {
-      command = command.concat([`--exclude=${excludeOpt}`]);
+    if (Deno.env.get("EXCLUDE") || excludeOpt) {
+      command = command.concat([
+        `--exclude=${Deno.env.get("EXCLUDE") || excludeOpt}`,
+      ]);
     }
 
-    if (!Deno.env.get("DENO_DEPLOY_TOKEN")) {
+    if (!Deno.env.get("DENO_DEPLOY_TOKEN") && !token) {
       throw new Error("DENO_DEPLOY_TOKEN environment variable is not set");
     }
 
@@ -146,7 +193,10 @@ export const deploy = async (src = ".") => {
     }
 
     const script = Deno.env.get("DENO_MAIN_SCRIPT") || "main.tsx";
-    command = command.concat([`--project=${project}`, script]);
+    command = command.concat([
+      `--project=${Deno.env.get("DENO_PROJECT") || project}`,
+      script,
+    ]);
 
     if (existsSync("devbox.json")) {
       command = ["sh", "-c", `devbox run -- ${command.join(" ")}`];
@@ -164,10 +214,13 @@ export const deploy = async (src = ".") => {
       })
       .withWorkdir("/app")
       .withEnvVariable("PATH", "/root/.deno/bin:$PATH", { expand: true })
-      .withEnvVariable("DENO_DEPLOY_TOKEN", Deno.env.get("DENO_DEPLOY_TOKEN")!)
+      .withEnvVariable(
+        "DENO_DEPLOY_TOKEN",
+        Deno.env.get("DENO_DEPLOY_TOKEN") || token!
+      )
       .withEnvVariable(
         "DENO_MAIN_SCRIPT",
-        Deno.env.get("DENO_MAIN_SCRIPT") || "main.tsx"
+        Deno.env.get("DENO_MAIN_SCRIPT") || main || "main.tsx"
       )
       .withExec(installDeployCtl)
       .withExec(command);
@@ -192,6 +245,7 @@ export const runnableJobs: Record<Job, JobExec> = {
   [Job.fmt]: fmt,
   [Job.lint]: lint,
   [Job.test]: test,
+  [Job.compile]: compile,
   [Job.deploy]: deploy,
 };
 
@@ -199,5 +253,6 @@ export const jobDescriptions: Record<Job, string> = {
   [Job.fmt]: "Format your code",
   [Job.lint]: "Lint your code",
   [Job.test]: "Run your tests",
+  [Job.compile]: "Compile your code",
   [Job.deploy]: "Deploy your code to Deno Deploy",
 };

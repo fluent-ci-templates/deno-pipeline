@@ -19,7 +19,30 @@ export const test = gql`
 `;
 
 export const deploy = gql`
-  query Deploy($src: String!) {
-    deploy(src: $src)
+  query Deploy(
+    $src: String!
+    $token: String!
+    $project: String!
+    $main: String!
+    $noStatic: Boolean!
+  ) {
+    deploy(
+      src: $src
+      token: $token
+      project: $project
+      main: $main
+      noStatic: $noStatic
+    )
+  }
+`;
+
+export const compile = gql`
+  query Compile(
+    $src: String!
+    $file: String!
+    $output: String!
+    $target: String!
+  ) {
+    compile(src: $src, file: $file, output: $output, target: $target)
   }
 `;
