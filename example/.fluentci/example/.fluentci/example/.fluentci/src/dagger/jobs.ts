@@ -1,6 +1,5 @@
-import Client from "@dagger.io/dagger";
-import { upload } from "https://deno.land/x/codecov_pipeline@v0.1.0/src/dagger/jobs.ts";
-import { withDevbox } from "https://deno.land/x/nix_installer_pipeline@v0.3.6/src/dagger/steps.ts";
+import Client from "@fluentci.io/dagger";
+import { withDevbox } from "https://deno.land/x/nix_installer_pipeline@v0.4.1/src/dagger/steps.ts";
 import { existsSync } from "fs";
 
 export enum Job {
@@ -8,8 +7,9 @@ export enum Job {
   lint = "lint",
   test = "test",
   deploy = "deploy",
-  codecov = "codecov",
 }
+
+export const exclude = [".git", ".devbox", ".fluentci"];
 
 const baseCtr = (client: Client, pipeline: string) => {
   if (existsSync("devbox.json")) {
@@ -37,7 +37,7 @@ export const lint = async (client: Client, src = ".") => {
 
   const ctr = baseCtr(client, Job.lint)
     .withDirectory("/app", context, {
-      exclude: [".git", ".devbox", ".fluentci"],
+      exclude,
     })
     .withWorkdir("/app")
     .withExec(command);
@@ -57,7 +57,7 @@ export const fmt = async (client: Client, src = ".") => {
 
   const ctr = baseCtr(client, Job.fmt)
     .withDirectory("/app", context, {
-      exclude: [".git", ".devbox", ".fluentci"],
+      exclude,
     })
     .withWorkdir("/app")
     .withExec(command);
@@ -86,7 +86,7 @@ export const test = async (
   const ctr = baseCtr(client, Job.test)
     .from("denoland/deno:alpine")
     .withDirectory("/app", context, {
-      exclude: [".git", ".devbox", ".fluentci"],
+      exclude,
     })
     .withWorkdir("/app")
     .withMountedCache("/root/.cache/deno", client.cacheVolume("deno-cache"))
@@ -113,7 +113,7 @@ export const deploy = async (client: Client, src = ".") => {
   ];
   const project = Deno.env.get("DENO_PROJECT");
   const noStatic = Deno.env.get("NO_STATIC");
-  const exclude = Deno.env.get("EXCLUDE");
+  const excludeOpt = Deno.env.get("EXCLUDE");
 
   let command = ["deployctl", "deploy"];
 
@@ -121,8 +121,8 @@ export const deploy = async (client: Client, src = ".") => {
     command = command.concat(["--no-static"]);
   }
 
-  if (exclude) {
-    command = command.concat([`--exclude=${exclude}`]);
+  if (excludeOpt) {
+    command = command.concat([`--exclude=${excludeOpt}`]);
   }
 
   if (!Deno.env.get("DENO_DEPLOY_TOKEN")) {
@@ -148,7 +148,7 @@ export const deploy = async (client: Client, src = ".") => {
   const ctr = baseCtr(client, Job.deploy)
     .from("denoland/deno:alpine")
     .withDirectory("/app", context, {
-      exclude: [".git", ".devbox", ".fluentci"],
+      exclude,
     })
     .withWorkdir("/app")
     .withEnvVariable("PATH", "/root/.deno/bin:$PATH", { expand: true })
@@ -178,14 +178,11 @@ export type JobExec = (
       }
     ) => Promise<void>);
 
-export const codecov = upload;
-
 export const runnableJobs: Record<Job, JobExec> = {
   [Job.fmt]: fmt,
   [Job.lint]: lint,
   [Job.test]: test,
   [Job.deploy]: deploy,
-  [Job.codecov]: upload,
 };
 
 export const jobDescriptions: Record<Job, string> = {
@@ -193,5 +190,4 @@ export const jobDescriptions: Record<Job, string> = {
   [Job.lint]: "Lint your code",
   [Job.test]: "Run your tests",
   [Job.deploy]: "Deploy your code to Deno Deploy",
-  [Job.codecov]: "Upload your code coverage to Codecov",
 };

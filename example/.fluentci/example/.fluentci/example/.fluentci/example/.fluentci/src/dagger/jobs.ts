@@ -1,5 +1,5 @@
-import Client from "@dagger.io/dagger";
-import { withDevbox } from "https://deno.land/x/nix_installer_pipeline@v0.3.6/src/dagger/steps.ts";
+import Client from "@fluentci.io/dagger";
+import { withDevbox } from "https://deno.land/x/nix_installer_pipeline@v0.4.1/src/dagger/steps.ts";
 import { existsSync } from "fs";
 
 export enum Job {
@@ -58,6 +58,7 @@ export const fmt = async (client: Client, src = ".") => {
       exclude: [".git", ".devbox", ".fluentci"],
     })
     .withWorkdir("/app")
+    .withExec(["ls", "-l"])
     .withExec(command);
 
   const result = await ctr.stdout();
@@ -71,7 +72,7 @@ export const test = async (
   options: { ignore: string[] } = { ignore: [] }
 ) => {
   const context = client.host().directory(src);
-  let command = ["deno", "test", "-A", "--lock-write"];
+  let command = ["deno", "test", "-A", "--coverage=coverage", "--lock-write"];
 
   if (options.ignore.length > 0) {
     command = command.concat([`--ignore=${options.ignore.join(",")}`]);
@@ -88,7 +89,10 @@ export const test = async (
     })
     .withWorkdir("/app")
     .withMountedCache("/root/.cache/deno", client.cacheVolume("deno-cache"))
-    .withExec(command);
+    .withExec(command)
+    .withExec(["sh", "-c", "deno coverage ./coverage --lcov > coverage.lcov"]);
+
+  await ctr.file("/app/coverage.lcov").export("./coverage.lcov");
 
   const result = await ctr.stdout();
 

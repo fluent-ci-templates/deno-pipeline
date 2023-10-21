@@ -13,7 +13,7 @@ phases:
       - dagger version
   build:
     commands:
-      - dagger run fluentci deno_pipeline fmt lint test
+      - fluentci run deno_pipeline fmt lint test
   post_build:
     commands:
       - echo Build completed on `date`

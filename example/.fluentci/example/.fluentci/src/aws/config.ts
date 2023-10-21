@@ -1,7 +1,7 @@
-import { BuildSpec } from "fluent_aws_codepipeline";
+import { FluentAWSCodePipeline } from "../../deps.ts";
 
-export function generateYaml(): BuildSpec {
-  const buildspec = new BuildSpec();
+export function generateYaml(): FluentAWSCodePipeline.BuildSpec {
+  const buildspec = new FluentAWSCodePipeline.BuildSpec();
   buildspec
     .phase("install", {
       commands: [
@@ -15,7 +15,7 @@ export function generateYaml(): BuildSpec {
       ],
     })
     .phase("build", {
-      commands: ["dagger run fluentci deno_pipeline fmt lint test"],
+      commands: ["fluentci run deno_pipeline fmt lint test"],
     })
     .phase("post_build", {
       commands: ["echo Build completed on `date`"],
