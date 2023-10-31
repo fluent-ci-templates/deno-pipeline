@@ -20,12 +20,17 @@ const baseCtr = (client: Client, pipeline: string) => {
         .container()
         .from("alpine:latest")
         .withExec(["apk", "update"])
-        .withExec(["apk", "add", "bash", "curl"])
+        .withExec(["apk", "add", "bash", "curl", "perl-utils"])
         .withMountedCache("/nix", client.cacheVolume("nix"))
         .withMountedCache("/etc/nix", client.cacheVolume("nix-etc"))
     );
   }
-  return client.pipeline(pipeline).container().from("denoland/deno:alpine");
+  return client
+    .pipeline(pipeline)
+    .container()
+    .from("denoland/deno:alpine")
+    .withExec(["apk", "update"])
+    .withExec(["apk", "add", "perl-utils"]);
 };
 
 export const lint = async (src = ".") => {
@@ -120,7 +125,6 @@ export const compile = async (
   output = "main",
   target = "x86_64-unknown-linux-gnu"
 ) => {
-  let result = "";
   await connect(async (client) => {
     const context = client.host().directory(src);
     let command = [
@@ -130,7 +134,7 @@ export const compile = async (
       "--output",
       output,
       "--target",
-      target,
+      Deno.env.get("TARGET") || target,
       file,
     ];
 
@@ -139,17 +143,34 @@ export const compile = async (
     }
 
     const ctr = baseCtr(client, Job.fmt)
+      .withMountedCache("/assets", client.cacheVolume("gh-release-assets"))
       .withDirectory("/app", context, {
         exclude,
       })
       .withWorkdir("/app")
       .withExec(command)
-      .withExec(["ls", "-ltr", "."]);
+      .withExec(["ls", "-ltr", "."])
+      .withExec([
+        "tar",
+        "czvf",
+        `/assets/${output}_${Deno.env.get("TAG") || ""}_${
+          Deno.env.get("TARGET") || target
+        }.tar.gz`,
+        output,
+      ])
+      .withExec([
+        "sh",
+        "-c",
+        `shasum -a 256 /assets/${output}_${Deno.env.get("TAG") || ""}_${
+          Deno.env.get("TARGET") || target
+        }.tar.gz > /assets/${output}_${
+          Deno.env.get("TAG") || ""
+        }_${Deno.env.get("TARGET" || target)}.tar.gz.sha256`,
+      ]);
 
     await ctr.file(`/app/${output}`).export(`./${output}`);
 
-    result = await ctr.stdout();
-    console.log(result);
+    await ctr.stdout();
   });
 
   return "Done";
