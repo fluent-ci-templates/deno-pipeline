@@ -1,5 +1,6 @@
 import Client from "../../deps.ts";
-import { withDevbox, connect } from "../../deps.ts";
+import { withDevbox } from "../../sdk/nix/index.ts";
+import { connect } from "../../sdk/connect.ts";
 import { existsSync } from "node:fs";
 
 export enum Job {
