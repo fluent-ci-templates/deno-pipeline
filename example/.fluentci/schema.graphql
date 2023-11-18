@@ -7,5 +7,6 @@ type Query {
   deploy(main: String!, noStatic: Boolean!, project: String!, src: String!, token: String!): String
   fmt(src: String!): String
   lint(src: String!): String
+  lintMod(src: String!): String
   test(src: String!): String
 }

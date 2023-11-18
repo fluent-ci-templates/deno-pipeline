@@ -21,4 +21,5 @@ jobs:
           dagger query --doc lint.gql
           dagger query --doc fmt.gql
           dagger query --doc compile.gql
+          dagger call lintMod --src .
         working-directory: example

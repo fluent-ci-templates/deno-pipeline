@@ -47,6 +47,7 @@ export interface NexusGenFieldTypes {
     deploy: string | null; // String
     fmt: string | null; // String
     lint: string | null; // String
+    lintMod: string | null; // String
     test: string | null; // String
   }
 }
@@ -57,6 +58,7 @@ export interface NexusGenFieldTypeNames {
     deploy: 'String'
     fmt: 'String'
     lint: 'String'
+    lintMod: 'String'
     test: 'String'
   }
 }
@@ -80,6 +82,9 @@ export interface NexusGenArgTypes {
       src: string; // String!
     }
     lint: { // args
+      src: string; // String!
+    }
+    lintMod: { // args
       src: string; // String!
     }
     test: { // args

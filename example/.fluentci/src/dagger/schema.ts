@@ -9,7 +9,7 @@ import {
   nonNull,
 } from "../../deps.ts";
 
-import { fmt, lint, test, deploy, compile } from "./jobs.ts";
+import { fmt, lint, test, deploy, compile, lintMod } from "./jobs.ts";
 
 const Query = queryType({
   definition(t) {
@@ -24,6 +24,12 @@ const Query = queryType({
         src: nonNull(stringArg()),
       },
       resolve: async (_root, args, _ctx) => await lint(args.src),
+    });
+    t.string("lintMod", {
+      args: {
+        src: nonNull(stringArg()),
+      },
+      resolve: async (_root, args, _ctx) => await lintMod(args.src),
     });
     t.string("test", {
       args: {

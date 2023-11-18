@@ -1,5 +1,6 @@
 import Client from "../../deps.ts";
-import { withDevbox, connect } from "../../deps.ts";
+import { withDevbox } from "../../sdk/nix/index.ts";
+import { connect } from "../../sdk/connect.ts";
 import { existsSync } from "node:fs";
 
 export enum Job {
@@ -8,6 +9,7 @@ export enum Job {
   test = "test",
   compile = "compile",
   deploy = "deploy",
+  lintMod = "lintMod",
 }
 
 export const exclude = [".git", ".devbox", ".fluentci"];
@@ -20,12 +22,17 @@ const baseCtr = (client: Client, pipeline: string) => {
         .container()
         .from("alpine:latest")
         .withExec(["apk", "update"])
-        .withExec(["apk", "add", "bash", "curl"])
+        .withExec(["apk", "add", "bash", "curl", "perl-utils"])
         .withMountedCache("/nix", client.cacheVolume("nix"))
         .withMountedCache("/etc/nix", client.cacheVolume("nix-etc"))
     );
   }
-  return client.pipeline(pipeline).container().from("denoland/deno:alpine");
+  return client
+    .pipeline(pipeline)
+    .container()
+    .from("denoland/deno:alpine")
+    .withExec(["apk", "update"])
+    .withExec(["apk", "add", "perl-utils"]);
 };
 
 export const lint = async (src = ".") => {
@@ -49,6 +56,14 @@ export const lint = async (src = ".") => {
     console.log(result);
   });
   return "Done";
+};
+
+export const lintMod = async (src = ".") => {
+  let result = "";
+  await connect(async (client: Client) => {
+    result = await client.deno().lint(src);
+  });
+  return result;
 };
 
 export const fmt = async (src = ".") => {
@@ -120,7 +135,6 @@ export const compile = async (
   output = "main",
   target = "x86_64-unknown-linux-gnu"
 ) => {
-  let result = "";
   await connect(async (client) => {
     const context = client.host().directory(src);
     let command = [
@@ -130,7 +144,7 @@ export const compile = async (
       "--output",
       output,
       "--target",
-      target,
+      Deno.env.get("TARGET") || target,
       file,
     ];
 
@@ -139,17 +153,34 @@ export const compile = async (
     }
 
     const ctr = baseCtr(client, Job.fmt)
+      .withMountedCache("/assets", client.cacheVolume("gh-release-assets"))
       .withDirectory("/app", context, {
         exclude,
       })
       .withWorkdir("/app")
       .withExec(command)
-      .withExec(["ls", "-ltr", "."]);
+      .withExec(["ls", "-ltr", "."])
+      .withExec([
+        "tar",
+        "czvf",
+        `/assets/${output}_${Deno.env.get("TAG") || ""}_${
+          Deno.env.get("TARGET") || target
+        }.tar.gz`,
+        output,
+      ])
+      .withExec([
+        "sh",
+        "-c",
+        `shasum -a 256 /assets/${output}_${Deno.env.get("TAG") || ""}_${
+          Deno.env.get("TARGET") || target
+        }.tar.gz > /assets/${output}_${
+          Deno.env.get("TAG") || ""
+        }_${Deno.env.get("TARGET" || target)}.tar.gz.sha256`,
+      ]);
 
     await ctr.file(`/app/${output}`).export(`./${output}`);
 
-    result = await ctr.stdout();
-    console.log(result);
+    await ctr.stdout();
   });
 
   return "Done";
@@ -252,6 +283,7 @@ export const runnableJobs: Record<Job, JobExec> = {
   [Job.test]: test,
   [Job.compile]: compile,
   [Job.deploy]: deploy,
+  [Job.lintMod]: lintMod,
 };
 
 export const jobDescriptions: Record<Job, string> = {
@@ -260,4 +292,5 @@ export const jobDescriptions: Record<Job, string> = {
   [Job.test]: "Run your tests",
   [Job.compile]: "Compile your code",
   [Job.deploy]: "Deploy your code to Deno Deploy",
+  [Job.lintMod]: "Lint your code with external dagger module",
 };
