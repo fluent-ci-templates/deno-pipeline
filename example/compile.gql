@@ -1,5 +1,5 @@
 {
-  deno {
+  denoExample {
     compile(
       src: "."
       file: "main.ts"
