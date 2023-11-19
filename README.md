@@ -52,24 +52,24 @@ fluentci run .
 ```graphql
 compile(
   file: String!, 
-  output: String!, 
-  src: String!, 
+  output: String, 
+  src: String, 
   target: String!
 ): String
 
 deploy(
   main: String!, 
-  noStatic: Boolean!, 
+  noStatic: Boolean, 
   project: String!, 
-  src: String!, 
+  src: String, 
   token: String!
 ): String
 
-fmt(src: String!): String
+fmt(src: String): String
 
-lint(src: String!): String
+lint(src: String): String
 
-test(src: String!): String
+test(src: String): String
 ```
 
 ## Programmatic usage
