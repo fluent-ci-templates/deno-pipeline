@@ -67,28 +67,28 @@ export interface NexusGenArgTypes {
   Query: {
     compile: { // args
       file: string; // String!
-      output: string; // String!
-      src: string; // String!
+      output?: string | null; // String
+      src?: string | null; // String
       target: string; // String!
     }
     deploy: { // args
       main: string; // String!
-      noStatic: boolean; // Boolean!
+      noStatic?: boolean | null; // Boolean
       project: string; // String!
-      src: string; // String!
+      src?: string | null; // String
       token: string; // String!
     }
     fmt: { // args
-      src: string; // String!
+      src?: string | null; // String
     }
     lint: { // args
-      src: string; // String!
+      src?: string | null; // String
     }
     lintMod: { // args
-      src: string; // String!
+      src?: string | null; // String
     }
     test: { // args
-      src: string; // String!
+      src?: string | null; // String
     }
   }
 }

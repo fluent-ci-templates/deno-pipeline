@@ -443,14 +443,14 @@ export type ContainerID = string & {__ContainerID: never}
 export type DateTime = string & {__DateTime: never}
 
 export type DenoCompileOpts = {
-  src?: string
+  src?: Directory
   file: string
   output?: string
   target: string
 }
 
 export type DenoDeployOpts = {
-  src?: string
+  src?: Directory
   token: string
   project: string
   main: string
@@ -458,15 +458,15 @@ export type DenoDeployOpts = {
 }
 
 export type DenoFmtOpts = {
-  src?: string
+  src?: Directory
 }
 
 export type DenoLintOpts = {
-  src?: string
+  src?: Directory
 }
 
 export type DenoTestOpts = {
-  src?: string
+  src?: Directory
 }
 
 export type DirectoryAsModuleOpts = {

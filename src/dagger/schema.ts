@@ -29,7 +29,7 @@ const Query = queryType({
       args: {
         src: stringArg(),
       },
-      resolve: async (_root, args, _ctx) => await test(args.src),
+      resolve: async (_root, args, _ctx) => await test(args.src || undefined),
     });
     t.string("deploy", {
       args: {
@@ -41,7 +41,7 @@ const Query = queryType({
       },
       resolve: async (_root, args, _ctx) =>
         await deploy(
-          args.src,
+          args.src || undefined,
           args.token,
           args.project,
           args.main,

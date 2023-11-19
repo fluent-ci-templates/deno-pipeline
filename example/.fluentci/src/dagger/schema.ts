@@ -9,7 +9,7 @@ import {
   nonNull,
 } from "../../deps.ts";
 
-import { fmt, lint, test, deploy, compile } from "./jobs.ts";
+import { fmt, lint, lintMod, test, deploy, compile } from "./jobs.ts";
 
 const Query = queryType({
   definition(t) {
@@ -17,19 +17,26 @@ const Query = queryType({
       args: {
         src: stringArg(),
       },
-      resolve: async (_root, args, _ctx) => await fmt(args.src),
+      resolve: async (_root, args, _ctx) => await fmt(args.src || undefined),
     });
     t.string("lint", {
       args: {
         src: stringArg(),
       },
-      resolve: async (_root, args, _ctx) => await lint(args.src),
+      resolve: async (_root, args, _ctx) => await lint(args.src || undefined),
+    });
+    t.string("lintMod", {
+      args: {
+        src: stringArg(),
+      },
+      resolve: async (_root, args, _ctx) =>
+        await lintMod(args.src || undefined),
     });
     t.string("test", {
       args: {
         src: stringArg(),
       },
-      resolve: async (_root, args, _ctx) => await test(args.src),
+      resolve: async (_root, args, _ctx) => await test(args.src || undefined),
     });
     t.string("deploy", {
       args: {
@@ -72,6 +79,7 @@ const schema = makeSchema({
 schema.description = JSON.stringify({
   "fmt.src": "directory",
   "lint.src": "directory",
+  "lintMod.src": "directory",
   "test.src": "directory",
   "deploy.src": "directory",
   "compile.src": "directory",

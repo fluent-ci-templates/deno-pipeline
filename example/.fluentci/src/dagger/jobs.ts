@@ -7,6 +7,7 @@ import { getDirectory } from "./lib.ts";
 export enum Job {
   fmt = "fmt",
   lint = "lint",
+  lintMod = "lintMod",
   test = "test",
   compile = "compile",
   deploy = "deploy",
@@ -56,6 +57,17 @@ export const lint = async (src: string | Directory | undefined = ".") => {
     console.log(result);
   });
   return "Done";
+};
+
+export const lintMod = async (src: string | Directory | undefined = ".") => {
+  let result = "";
+  await connect(async (client) => {
+    const context = getDirectory(client, src);
+    result = await client.deno().lint({
+      src: context,
+    });
+  });
+  return result;
 };
 
 export const fmt = async (src: string | Directory | undefined = ".") => {
@@ -275,6 +287,7 @@ export const runnableJobs: Record<Job, JobExec> = {
   [Job.test]: test,
   [Job.compile]: compile,
   [Job.deploy]: deploy,
+  [Job.lintMod]: lintMod,
 };
 
 export const jobDescriptions: Record<Job, string> = {
@@ -283,4 +296,5 @@ export const jobDescriptions: Record<Job, string> = {
   [Job.test]: "Run your tests",
   [Job.compile]: "Compile your code",
   [Job.deploy]: "Deploy your code to Deno Deploy",
+  [Job.lintMod]: "Lint your code with (using external dagger modules)",
 };

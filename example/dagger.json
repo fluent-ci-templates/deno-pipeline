@@ -2,6 +2,6 @@
   "name": "deno-example",
   "sdk": "github.com/fluentci-io/daggerverse/deno-sdk@main",
   "dependencies": [
-    "github.com/fluent-ci-templates/deno-pipeline@9aebb380a82f7a09ad50d23e1c9b506bcbf87fbe"
+    "github.com/fluent-ci-templates/deno-pipeline@531a502902d064318917d8497f74da0a341362ec"
   ]
 }
