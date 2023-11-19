@@ -61,7 +61,9 @@ export const lint = async (src = ".") => {
 export const lintMod = async (src = ".") => {
   let result = "";
   await connect(async (client: Client) => {
-    result = await client.deno().lint(src);
+    result = await client.deno().lint({
+      src,
+    });
   });
   return result;
 };
