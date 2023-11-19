@@ -1,7 +1,8 @@
-import Client from "../../deps.ts";
+import Client, { Directory } from "../../deps.ts";
 import { withDevbox } from "../../sdk/nix/index.ts";
 import { connect } from "../../sdk/connect.ts";
 import { existsSync } from "node:fs";
+import { getDirectory } from "./lib.ts";
 
 export enum Job {
   fmt = "fmt",
@@ -34,10 +35,10 @@ const baseCtr = (client: Client, pipeline: string) => {
     .withExec(["apk", "add", "perl-utils"]);
 };
 
-export const lint = async (src = ".") => {
+export const lint = async (src: string | Directory | undefined = ".") => {
   let result = "";
   await connect(async (client) => {
-    const context = client.host().directory(src);
+    const context = getDirectory(client, src);
     let command = ["deno", "lint"];
 
     if (existsSync("devbox.json")) {
@@ -57,10 +58,10 @@ export const lint = async (src = ".") => {
   return "Done";
 };
 
-export const fmt = async (src = ".") => {
+export const fmt = async (src: string | Directory | undefined = ".") => {
   let result = "";
   await connect(async (client) => {
-    const context = client.host().directory(src);
+    const context = getDirectory(client, src);
     let command = ["deno", "fmt"];
 
     if (existsSync("devbox.json")) {
@@ -82,12 +83,12 @@ export const fmt = async (src = ".") => {
 };
 
 export const test = async (
-  src = ".",
+  src: string | Directory | undefined = ".",
   options: { ignore: string[] } = { ignore: [] }
 ) => {
   let result = "";
   await connect(async (client) => {
-    const context = client.host().directory(src);
+    const context = getDirectory(client, src);
     let command = ["deno", "test", "-A", "--coverage=coverage", "--lock-write"];
 
     if (options.ignore.length > 0) {
@@ -121,13 +122,13 @@ export const test = async (
 };
 
 export const compile = async (
-  src = ".",
+  src: string | Directory | undefined = ".",
   file = "main.ts",
   output = "main",
   target = "x86_64-unknown-linux-gnu"
 ) => {
   await connect(async (client) => {
-    const context = client.host().directory(src);
+    const context = getDirectory(client, src);
     let command = [
       "deno",
       "compile",
@@ -178,7 +179,7 @@ export const compile = async (
 };
 
 export const deploy = async (
-  src = ".",
+  src: string | Directory | undefined = ".",
   token?: string,
   project?: string,
   main?: string,
@@ -187,7 +188,7 @@ export const deploy = async (
 ) => {
   let result = "";
   await connect(async (client) => {
-    const context = client.host().directory(src);
+    const context = getDirectory(client, src);
     let installDeployCtl = [
       "deno",
       "install",

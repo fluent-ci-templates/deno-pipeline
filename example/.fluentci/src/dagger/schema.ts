@@ -9,7 +9,7 @@ import {
   nonNull,
 } from "../../deps.ts";
 
-import { fmt, lint, test, deploy, compile, lintMod } from "./jobs.ts";
+import { fmt, lint, test, deploy, compile } from "./jobs.ts";
 
 const Query = queryType({
   definition(t) {
@@ -24,12 +24,6 @@ const Query = queryType({
         src: stringArg(),
       },
       resolve: async (_root, args, _ctx) => await lint(args.src),
-    });
-    t.string("lintMod", {
-      args: {
-        src: stringArg(),
-      },
-      resolve: async (_root, args, _ctx) => await lintMod(args.src),
     });
     t.string("test", {
       args: {
@@ -67,10 +61,20 @@ const Query = queryType({
   },
 });
 
-export const schema = makeSchema({
+const schema = makeSchema({
   types: [Query],
   outputs: {
     schema: resolve(join(dirname(".."), dirname(".."), "schema.graphql")),
     typegen: resolve(join(dirname(".."), dirname(".."), "gen", "nexus.ts")),
   },
 });
+
+schema.description = JSON.stringify({
+  "fmt.src": "directory",
+  "lint.src": "directory",
+  "test.src": "directory",
+  "deploy.src": "directory",
+  "compile.src": "directory",
+});
+
+export { schema };
