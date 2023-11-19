@@ -442,6 +442,33 @@ export type ContainerID = string & {__ContainerID: never}
  */
 export type DateTime = string & {__DateTime: never}
 
+export type DenoCompileOpts = {
+  src?: string
+  file: string
+  output?: string
+  target: string
+}
+
+export type DenoDeployOpts = {
+  src?: string
+  token: string
+  project: string
+  main: string
+  noStatic?: boolean
+}
+
+export type DenoFmtOpts = {
+  src?: string
+}
+
+export type DenoLintOpts = {
+  src?: string
+}
+
+export type DenoTestOpts = {
+  src?: string
+}
+
 export type DirectoryAsModuleOpts = {
   /**
    * An optional subpath of the directory which contains the module's source
@@ -2400,7 +2427,7 @@ export class Deno extends BaseClient {
      this._lint = _lint
      this._test = _test
    }
-  async compile(src: string, file: string, output: string, target: string): Promise<string> {
+  async compile(opts?: DenoCompileOpts): Promise<string> {
     if (this._compile) {
       return this._compile
     }
@@ -2410,7 +2437,7 @@ export class Deno extends BaseClient {
         ...this._queryTree,
         {
           operation: "compile",
-          args: { src, file, output, target },
+          args: { ...opts },
         },
       ],
       this.client
@@ -2419,7 +2446,7 @@ export class Deno extends BaseClient {
     
     return response
   }
-  async deploy(src: string, token: string, project: string, main: string, noStatic: boolean): Promise<string> {
+  async deploy(opts?: DenoDeployOpts): Promise<string> {
     if (this._deploy) {
       return this._deploy
     }
@@ -2429,7 +2456,7 @@ export class Deno extends BaseClient {
         ...this._queryTree,
         {
           operation: "deploy",
-          args: { src, token, project, main, noStatic },
+          args: { ...opts },
         },
       ],
       this.client
@@ -2438,7 +2465,7 @@ export class Deno extends BaseClient {
     
     return response
   }
-  async fmt(src: string): Promise<string> {
+  async fmt(opts?: DenoFmtOpts): Promise<string> {
     if (this._fmt) {
       return this._fmt
     }
@@ -2448,7 +2475,7 @@ export class Deno extends BaseClient {
         ...this._queryTree,
         {
           operation: "fmt",
-          args: { src },
+          args: { ...opts },
         },
       ],
       this.client
@@ -2457,7 +2484,7 @@ export class Deno extends BaseClient {
     
     return response
   }
-  async lint(src: string): Promise<string> {
+  async lint(opts?: DenoLintOpts): Promise<string> {
     if (this._lint) {
       return this._lint
     }
@@ -2467,7 +2494,7 @@ export class Deno extends BaseClient {
         ...this._queryTree,
         {
           operation: "lint",
-          args: { src },
+          args: { ...opts },
         },
       ],
       this.client
@@ -2476,7 +2503,7 @@ export class Deno extends BaseClient {
     
     return response
   }
-  async test(src: string): Promise<string> {
+  async test(opts?: DenoTestOpts): Promise<string> {
     if (this._test) {
       return this._test
     }
@@ -2486,7 +2513,7 @@ export class Deno extends BaseClient {
         ...this._queryTree,
         {
           operation: "test",
-          args: { src },
+          args: { ...opts },
         },
       ],
       this.client
