@@ -1,36 +1,36 @@
 import { gql } from "../../deps.ts";
 
 export const fmt = gql`
-  query Fmt($src: String!) {
+  query Fmt($src: String) {
     fmt(src: $src)
   }
 `;
 
 export const lint = gql`
-  query Lint($src: String!) {
+  query Lint($src: String) {
     lint(src: $src)
   }
 `;
 
 export const lintMod = gql`
-  query LintMod($src: String!) {
+  query LintMod($src: String) {
     lintMod(src: $src)
   }
 `;
 
 export const test = gql`
-  query Test($src: String!) {
+  query Test($src: String) {
     test(src: $src)
   }
 `;
 
 export const deploy = gql`
   query Deploy(
-    $src: String!
+    $src: String
     $token: String!
     $project: String!
     $main: String!
-    $noStatic: Boolean!
+    $noStatic: Boolean
   ) {
     deploy(
       src: $src
@@ -44,9 +44,9 @@ export const deploy = gql`
 
 export const compile = gql`
   query Compile(
-    $src: String!
+    $src: String
     $file: String!
-    $output: String!
+    $output: String
     $target: String!
   ) {
     compile(src: $src, file: $file, output: $output, target: $target)

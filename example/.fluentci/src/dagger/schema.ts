@@ -15,35 +15,35 @@ const Query = queryType({
   definition(t) {
     t.string("fmt", {
       args: {
-        src: nonNull(stringArg()),
+        src: stringArg(),
       },
       resolve: async (_root, args, _ctx) => await fmt(args.src),
     });
     t.string("lint", {
       args: {
-        src: nonNull(stringArg()),
+        src: stringArg(),
       },
       resolve: async (_root, args, _ctx) => await lint(args.src),
     });
     t.string("lintMod", {
       args: {
-        src: nonNull(stringArg()),
+        src: stringArg(),
       },
       resolve: async (_root, args, _ctx) => await lintMod(args.src),
     });
     t.string("test", {
       args: {
-        src: nonNull(stringArg()),
+        src: stringArg(),
       },
       resolve: async (_root, args, _ctx) => await test(args.src),
     });
     t.string("deploy", {
       args: {
-        src: nonNull(stringArg()),
+        src: stringArg(),
         token: nonNull(stringArg()),
         project: nonNull(stringArg()),
         main: nonNull(stringArg()),
-        noStatic: nonNull(booleanArg()),
+        noStatic: booleanArg(),
       },
       resolve: async (_root, args, _ctx) =>
         await deploy(
@@ -56,9 +56,9 @@ const Query = queryType({
     });
     t.string("compile", {
       args: {
-        src: nonNull(stringArg()),
+        src: stringArg(),
         file: nonNull(stringArg()),
-        output: nonNull(stringArg()),
+        output: stringArg(),
         target: nonNull(stringArg()),
       },
       resolve: async (_root, args, _ctx) =>
