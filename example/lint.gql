@@ -1,5 +1,7 @@
 {
   denoExample {
-    lint
+    lint {
+      id
+    }
   }
 }
