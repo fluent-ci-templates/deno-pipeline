@@ -29,6 +29,14 @@ Now you can run the pipeline with:
 fluentci run .
 ```
 
+## Dagger Module
+
+Use as a [Dagger](https://dagger.io) module:
+
+```bash
+dagger mod install github.com/fluent-ci-templates/deno-pipeline@mod
+```
+
 ## Environment variables (Deno Deploy)
 
 | Variable          | Description               | Default    |
