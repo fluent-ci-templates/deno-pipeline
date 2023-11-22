@@ -1,8 +1,8 @@
-import Client, { Directory } from "../../deps.ts";
+import Client, { Directory, Secret } from "../../deps.ts";
 import { withDevbox } from "../../sdk/nix/index.ts";
 import { connect } from "../../sdk/connect.ts";
 import { existsSync } from "node:fs";
-import { getDirectory } from "./lib.ts";
+import { getDirectory, getDenoDeployToken } from "./lib.ts";
 
 export enum Job {
   fmt = "fmt",
@@ -36,7 +36,7 @@ const baseCtr = (client: Client, pipeline: string) => {
 };
 
 export const lint = async (src: string | Directory | undefined = ".") => {
-  let result = "";
+  let id = "";
   await connect(async (client) => {
     const context = getDirectory(client, src);
     let command = ["deno", "lint"];
@@ -52,14 +52,16 @@ export const lint = async (src: string | Directory | undefined = ".") => {
       .withWorkdir("/app")
       .withExec(command);
 
-    result = await ctr.stdout();
+    const result = await ctr.stdout();
     console.log(result);
+
+    id = await ctr.directory("/app").id();
   });
-  return "Done";
+  return id;
 };
 
 export const fmt = async (src: string | Directory | undefined = ".") => {
-  let result = "";
+  let id = "";
   await connect(async (client) => {
     const context = getDirectory(client, src);
     let command = ["deno", "fmt"];
@@ -75,18 +77,19 @@ export const fmt = async (src: string | Directory | undefined = ".") => {
       .withWorkdir("/app")
       .withExec(command);
 
-    result = await ctr.stdout();
+    const result = await ctr.stdout();
     console.log(result);
+    id = await ctr.directory("/app").id();
   });
 
-  return "Done";
+  return id;
 };
 
 export const test = async (
   src: string | Directory | undefined = ".",
   options: { ignore: string[] } = { ignore: [] }
 ) => {
-  let result = "";
+  let id = "";
   await connect(async (client) => {
     const context = getDirectory(client, src);
     let command = ["deno", "test", "-A", "--coverage=coverage", "--lock-write"];
@@ -113,12 +116,14 @@ export const test = async (
         "deno coverage ./coverage --lcov > coverage.lcov",
       ]);
 
-    await ctr.file("/app/coverage.lcov").export("./coverage.lcov");
+    const cov = await ctr.file("/app/coverage.lcov");
+    cov.export("./coverage.lcov");
+    id = await cov.id();
 
-    result = await ctr.stdout();
+    const result = await ctr.stdout();
     console.log(result);
   });
-  return "Done";
+  return id;
 };
 
 export const compile = async (
@@ -127,6 +132,7 @@ export const compile = async (
   output = "main",
   target = "x86_64-unknown-linux-gnu"
 ) => {
+  let id = "";
   await connect(async (client) => {
     const context = getDirectory(client, src);
     let command = [
@@ -170,17 +176,19 @@ export const compile = async (
         }_${Deno.env.get("TARGET" || target)}.tar.gz.sha256`,
       ]);
 
-    await ctr.file(`/app/${output}`).export(`./${output}`);
+    const exe = await ctr.file(`/app/${output}`);
+    exe.export(`./${output}`);
 
     await ctr.stdout();
+    id = await exe.id();
   });
 
-  return "Done";
+  return id;
 };
 
 export const deploy = async (
   src: string | Directory | undefined = ".",
-  token?: string,
+  token?: string | Secret,
   project?: string,
   main?: string,
   noStatic?: boolean,
@@ -211,8 +219,11 @@ export const deploy = async (
       ]);
     }
 
-    if (!Deno.env.get("DENO_DEPLOY_TOKEN") && !token) {
-      throw new Error("DENO_DEPLOY_TOKEN environment variable is not set");
+    const secret = getDenoDeployToken(client, token);
+
+    if (!secret) {
+      console.error("DENO_DEPLOY_TOKEN environment variable is not set");
+      Deno.exit(1);
     }
 
     if (!project) {
@@ -241,10 +252,7 @@ export const deploy = async (
       })
       .withWorkdir("/app")
       .withEnvVariable("PATH", "/root/.deno/bin:$PATH", { expand: true })
-      .withEnvVariable(
-        "DENO_DEPLOY_TOKEN",
-        Deno.env.get("DENO_DEPLOY_TOKEN") || token!
-      )
+      .withSecretVariable("DENO_DEPLOY_TOKEN", secret)
       .withEnvVariable(
         "DENO_MAIN_SCRIPT",
         Deno.env.get("DENO_MAIN_SCRIPT") || main || "main.tsx"

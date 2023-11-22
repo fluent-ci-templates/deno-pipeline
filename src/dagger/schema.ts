@@ -17,13 +17,13 @@ const Query = queryType({
       args: {
         src: stringArg(),
       },
-      resolve: async (_root, args, _ctx) => await fmt(args.src),
+      resolve: async (_root, args, _ctx) => await fmt(args.src || undefined),
     });
     t.string("lint", {
       args: {
         src: stringArg(),
       },
-      resolve: async (_root, args, _ctx) => await lint(args.src),
+      resolve: async (_root, args, _ctx) => await lint(args.src || undefined),
     });
     t.string("test", {
       args: {
@@ -45,7 +45,7 @@ const Query = queryType({
           args.token,
           args.project,
           args.main,
-          args.noStatic
+          args.noStatic || false
         ),
     });
     t.string("compile", {
@@ -56,7 +56,12 @@ const Query = queryType({
         target: nonNull(stringArg()),
       },
       resolve: async (_root, args, _ctx) =>
-        await compile(args.src, args.file, args.output, args.target),
+        await compile(
+          args.src || undefined,
+          args.file,
+          args.output || undefined,
+          args.target
+        ),
     });
   },
 });
@@ -75,6 +80,11 @@ schema.description = JSON.stringify({
   "test.src": "directory",
   "deploy.src": "directory",
   "compile.src": "directory",
+  "deploy.token": "secret",
+  compile: "file",
+  test: "file",
+  fmt: "directory",
+  lint: "directory",
 });
 
 export { schema };
