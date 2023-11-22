@@ -80,6 +80,11 @@ schema.description = JSON.stringify({
   "test.src": "directory",
   "deploy.src": "directory",
   "compile.src": "directory",
+  "deploy.token": "secret",
+  compile: "file",
+  test: "file",
+  fmt: "directory",
+  lint: "directory",
 });
 
 export { schema };
