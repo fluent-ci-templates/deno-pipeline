@@ -1,5 +1,4 @@
 import Client, { Directory, Secret, File } from "../../deps.ts";
-import { withDevbox } from "../../sdk/nix/index.ts";
 import { connect } from "../../sdk/connect.ts";
 import { existsSync } from "node:fs";
 import { getDirectory, getDenoDeployToken } from "./lib.ts";
@@ -15,18 +14,6 @@ export enum Job {
 export const exclude = [".git", ".devbox", ".fluentci"];
 
 const baseCtr = (client: Client, pipeline: string) => {
-  if (existsSync("devbox.json")) {
-    return withDevbox(
-      client
-        .pipeline(pipeline)
-        .container()
-        .from("alpine:latest")
-        .withExec(["apk", "update"])
-        .withExec(["apk", "add", "bash", "curl", "perl-utils"])
-        .withMountedCache("/nix", client.cacheVolume("nix"))
-        .withMountedCache("/etc/nix", client.cacheVolume("nix-etc"))
-    );
-  }
   return client
     .pipeline(pipeline)
     .container()
@@ -105,20 +92,20 @@ export async function fmt(
  * @function
  * @description Run your tests
  * @param {string | Directory} src
- * @param { ignore: string[] } options
+ * @param {string[]} ignore
  * @returns {string}
  */
 export async function test(
   src: string | Directory | undefined = ".",
-  options: { ignore: string[] } = { ignore: [] }
+  ignore: string[] = []
 ): Promise<File | string> {
   let id = "";
   await connect(async (client) => {
     const context = getDirectory(client, src);
     let command = ["deno", "test", "-A", "--coverage=coverage", "--lock-write"];
 
-    if (options.ignore.length > 0) {
-      command = command.concat([`--ignore=${options.ignore.join(",")}`]);
+    if (ignore.length > 0) {
+      command = command.concat([`--ignore=${ignore.join(",")}`]);
     }
 
     if (existsSync("devbox.json")) {
@@ -314,7 +301,7 @@ export type JobExec =
   | ((src: string | Directory | undefined) => Promise<Directory | string>)
   | ((
       src: string | Directory | undefined,
-      options: { ignore: string[] }
+      ignore?: string[]
     ) => Promise<File | string>)
   | ((
       src: string | Directory | undefined,
