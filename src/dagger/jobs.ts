@@ -35,7 +35,15 @@ const baseCtr = (client: Client, pipeline: string) => {
     .withExec(["apk", "add", "perl-utils"]);
 };
 
-export const lint = async (src: string | Directory | undefined = ".") => {
+/**
+ * @function
+ * @description Lint your code
+ * @param {string | Directory} src
+ * @returns {string}
+ */
+export async function lint(
+  src: string | Directory | undefined = "."
+): Promise<Directory | string> {
   let id = "";
   await connect(async (client) => {
     const context = getDirectory(client, src);
@@ -58,9 +66,17 @@ export const lint = async (src: string | Directory | undefined = ".") => {
     id = await ctr.directory("/app").id();
   });
   return id;
-};
+}
 
-export const fmt = async (src: string | Directory | undefined = ".") => {
+/**
+ * @function
+ * @description Format your code
+ * @param {string | Directory} src
+ * @returns {string}
+ */
+export async function fmt(
+  src: string | Directory | undefined = "."
+): Promise<Directory | string> {
   let id = "";
   await connect(async (client) => {
     const context = getDirectory(client, src);
@@ -83,12 +99,19 @@ export const fmt = async (src: string | Directory | undefined = ".") => {
   });
 
   return id;
-};
+}
 
-export const test = async (
+/**
+ * @function
+ * @description Run your tests
+ * @param {string | Directory} src
+ * @param { ignore: string[] } options
+ * @returns {string}
+ */
+export async function test(
   src: string | Directory | undefined = ".",
   options: { ignore: string[] } = { ignore: [] }
-) => {
+): Promise<File | string> {
   let id = "";
   await connect(async (client) => {
     const context = getDirectory(client, src);
@@ -124,14 +147,23 @@ export const test = async (
     console.log(result);
   });
   return id;
-};
+}
 
-export const compile = async (
+/**
+ * @function
+ * @description Compile your code
+ * @param {string | Directory} src
+ * @param {string} file
+ * @param {string} output
+ * @param {string} target
+ * @returns {string}
+ */
+export async function compile(
   src: string | Directory | undefined = ".",
   file = "main.ts",
   output = "main",
   target = "x86_64-unknown-linux-gnu"
-) => {
+): Promise<File | string> {
   let id = "";
   await connect(async (client) => {
     const context = getDirectory(client, src);
@@ -184,16 +216,27 @@ export const compile = async (
   });
 
   return id;
-};
+}
 
-export const deploy = async (
+/**
+ * @function
+ * @description Deploy your code to Deno Deploy
+ * @param {string | Directory} src
+ * @param {string | Secret} token
+ * @param {string} project
+ * @param {string} main
+ * @param {boolean} noStatic
+ * @param {string} excludeOpt
+ * @returns {string}
+ */
+export async function deploy(
   src: string | Directory | undefined = ".",
   token?: string | Secret,
   project?: string,
   main?: string,
   noStatic?: boolean,
   excludeOpt?: string
-) => {
+): Promise<string> {
   let result = "";
   await connect(async (client) => {
     const context = getDirectory(client, src);
@@ -265,17 +308,12 @@ export const deploy = async (
   });
 
   return "Done";
-};
+}
 
-export type JobExec = (src?: string) =>
-  | Promise<string>
-  | ((
-      client: Client,
-      src?: string,
-      options?: {
-        ignore: string[];
-      }
-    ) => Promise<string>);
+export type JobExec = (
+  src?: string | Directory,
+  options?: any
+) => Promise<File | Directory | string>;
 
 export const runnableJobs: Record<Job, JobExec> = {
   [Job.fmt]: fmt,
