@@ -312,6 +312,7 @@ export async function deploy(
 
 export type JobExec = (
   src?: string | Directory,
+  // deno-lint-ignore no-explicit-any
   options?: any
 ) => Promise<File | Directory | string>;
 
