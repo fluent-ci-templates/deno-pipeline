@@ -442,33 +442,6 @@ export type ContainerID = string & {__ContainerID: never}
  */
 export type DateTime = string & {__DateTime: never}
 
-export type DenoCompileOpts = {
-  src?: Directory
-  file: string
-  output?: string
-  target: string
-}
-
-export type DenoDeployOpts = {
-  src?: Directory
-  token: string
-  project: string
-  main: string
-  noStatic?: boolean
-}
-
-export type DenoFmtOpts = {
-  src?: Directory
-}
-
-export type DenoLintOpts = {
-  src?: Directory
-}
-
-export type DenoTestOpts = {
-  src?: Directory
-}
-
 export type DirectoryAsModuleOpts = {
   /**
    * An optional subpath of the directory which contains the module's source
@@ -2399,130 +2372,6 @@ export class Container extends BaseClient {
 
 
 
-
-
-export class Deno extends BaseClient {
-  private readonly _compile?: string = undefined
-  private readonly _deploy?: string = undefined
-  private readonly _fmt?: string = undefined
-  private readonly _lint?: string = undefined
-  private readonly _test?: string = undefined
-
-  /**
-   * Constructor is used for internal usage only, do not create object from it.
-   */
-   constructor(
-    parent?: { queryTree?: QueryTree[], host?: string, sessionToken?: string },
-     _compile?: string,
-     _deploy?: string,
-     _fmt?: string,
-     _lint?: string,
-     _test?: string,
-   ) {
-     super(parent)
-
-     this._compile = _compile
-     this._deploy = _deploy
-     this._fmt = _fmt
-     this._lint = _lint
-     this._test = _test
-   }
-  async compile(opts?: DenoCompileOpts): Promise<string> {
-    if (this._compile) {
-      return this._compile
-    }
-
-    const response: Awaited<string> = await computeQuery(
-      [
-        ...this._queryTree,
-        {
-          operation: "compile",
-          args: { ...opts },
-        },
-      ],
-      this.client
-    )
-
-    
-    return response
-  }
-  async deploy(opts?: DenoDeployOpts): Promise<string> {
-    if (this._deploy) {
-      return this._deploy
-    }
-
-    const response: Awaited<string> = await computeQuery(
-      [
-        ...this._queryTree,
-        {
-          operation: "deploy",
-          args: { ...opts },
-        },
-      ],
-      this.client
-    )
-
-    
-    return response
-  }
-  async fmt(opts?: DenoFmtOpts): Promise<string> {
-    if (this._fmt) {
-      return this._fmt
-    }
-
-    const response: Awaited<string> = await computeQuery(
-      [
-        ...this._queryTree,
-        {
-          operation: "fmt",
-          args: { ...opts },
-        },
-      ],
-      this.client
-    )
-
-    
-    return response
-  }
-  async lint(opts?: DenoLintOpts): Promise<string> {
-    if (this._lint) {
-      return this._lint
-    }
-
-    const response: Awaited<string> = await computeQuery(
-      [
-        ...this._queryTree,
-        {
-          operation: "lint",
-          args: { ...opts },
-        },
-      ],
-      this.client
-    )
-
-    
-    return response
-  }
-  async test(opts?: DenoTestOpts): Promise<string> {
-    if (this._test) {
-      return this._test
-    }
-
-    const response: Awaited<string> = await computeQuery(
-      [
-        ...this._queryTree,
-        {
-          operation: "test",
-          args: { ...opts },
-        },
-      ],
-      this.client
-    )
-
-    
-    return response
-  }
-}
 
 /**
  * A directory.
@@ -5138,18 +4987,6 @@ export class Client extends BaseClient {
 
     
     return response
-  }
-  deno(): Deno {
-    return new Deno({
-      queryTree: [
-        ...this._queryTree,
-        {
-          operation: "deno",
-        },
-      ],
-      host: this.clientHost,
-      sessionToken: this.sessionToken,
-    })
   }
 
   /**
