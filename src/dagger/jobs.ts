@@ -1,4 +1,4 @@
-import Client, { Directory, Secret } from "../../deps.ts";
+import Client, { Directory, Secret, File } from "../../deps.ts";
 import { withDevbox } from "../../sdk/nix/index.ts";
 import { connect } from "../../sdk/connect.ts";
 import { existsSync } from "node:fs";
@@ -310,11 +310,18 @@ export async function deploy(
   return "Done";
 }
 
-export type JobExec = (
-  src?: string | Directory,
-  // deno-lint-ignore no-explicit-any
-  options?: any
-) => Promise<File | Directory | string>;
+export type JobExec =
+  | ((src: string | Directory | undefined) => Promise<Directory | string>)
+  | ((
+      src: string | Directory | undefined,
+      options: { ignore: string[] }
+    ) => Promise<File | string>)
+  | ((
+      src: string | Directory | undefined,
+      file?: string,
+      output?: string,
+      target?: string
+    ) => Promise<File | string>);
 
 export const runnableJobs: Record<Job, JobExec> = {
   [Job.fmt]: fmt,
