@@ -57,27 +57,35 @@ dagger mod install github.com/fluent-ci-templates/deno-pipeline@mod
 | compile | Compile the given script into a self contained executable |                        |
 | deploy  | Deploy your app to Deno Deploy                            |                        |
 
-```graphql
+```typescript
+lint(
+  src: string | Directory | undefined = "."
+): Promise<Directory | string>
+
+fmt(
+  src: string | Directory | undefined = "."
+): Promise<Directory | string>
+
+test(
+  src: string | Directory | undefined = ".",
+  ignore: string[] = []
+): Promise<File | string>
+
 compile(
-  file: String!, 
-  output: String, 
-  src: String, 
-  target: String!
-): String
+  src: string | Directory | undefined = ".",
+  file = "main.ts",
+  output = "main",
+  target = "x86_64-unknown-linux-gnu"
+): Promise<File | string>
 
 deploy(
-  main: String!, 
-  noStatic: Boolean, 
-  project: String!, 
-  src: String, 
-  token: String!
-): String
-
-fmt(src: String): String
-
-lint(src: String): String
-
-test(src: String): String
+  src: string | Directory | undefined = ".",
+  token?: string | Secret,
+  project?: string,
+  main?: string,
+  noStatic?: boolean,
+  excludeOpt?: string
+): Promise<string>
 ```
 
 ## Programmatic usage
