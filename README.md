@@ -7,6 +7,8 @@
 
 A ready-to-use CI/CD Pipeline for your Deno projects.
 
+![Made with VHS](https://vhs.charm.sh/vhs-3itysSnE548cLEyRNkuLAo.gif)
+
 ## 🚀 Usage
 
 Run the following command:
