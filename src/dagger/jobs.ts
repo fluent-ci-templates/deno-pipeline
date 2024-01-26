@@ -33,7 +33,7 @@ export async function lint(
 ): Promise<Directory | string> {
   let id = "";
   await connect(async (client) => {
-    const context = getDirectory(client, src);
+    const context = await getDirectory(client, src);
     let command = ["deno", "lint"];
 
     if (existsSync("devbox.json")) {
@@ -66,7 +66,7 @@ export async function fmt(
 ): Promise<Directory | string> {
   let id = "";
   await connect(async (client) => {
-    const context = getDirectory(client, src);
+    const context = await getDirectory(client, src);
     let command = ["deno", "fmt"];
 
     if (existsSync("devbox.json")) {
@@ -101,7 +101,7 @@ export async function test(
 ): Promise<File | string> {
   let id = "";
   await connect(async (client) => {
-    const context = getDirectory(client, src);
+    const context = await getDirectory(client, src);
     let command = ["deno", "test", "-A", "--coverage=coverage", "--lock-write"];
 
     if (ignore.length > 0) {
@@ -153,7 +153,7 @@ export async function compile(
 ): Promise<File | string> {
   let id = "";
   await connect(async (client) => {
-    const context = getDirectory(client, src);
+    const context = await getDirectory(client, src);
     let command = [
       "deno",
       "compile",
@@ -226,7 +226,7 @@ export async function deploy(
 ): Promise<string> {
   let result = "";
   await connect(async (client) => {
-    const context = getDirectory(client, src);
+    const context = await getDirectory(client, src);
     let installDeployCtl = [
       "deno",
       "install",
@@ -249,7 +249,7 @@ export async function deploy(
       ]);
     }
 
-    const secret = getDenoDeployToken(client, token);
+    const secret = await getDenoDeployToken(client, token);
 
     if (!secret) {
       console.error("DENO_DEPLOY_TOKEN environment variable is not set");
