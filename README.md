@@ -5,6 +5,9 @@
 ![deno compatibility](https://shield.deno.dev/deno/^1.37)
 [![](https://img.shields.io/codecov/c/gh/fluent-ci-templates/deno-pipeline)](https://codecov.io/gh/fluent-ci-templates/deno-pipeline)
 
+[![CodeSee](https://codesee-docs.s3.amazonaws.com/badge.svg?)](https://app.codesee.io/maps/public/d933e050-c5a7-11ee-b3d5-db051da2172a)
+
+
 A ready-to-use CI/CD Pipeline for your Deno projects.
 
 ![Made with VHS](https://vhs.charm.sh/vhs-3itysSnE548cLEyRNkuLAo.gif)
