@@ -141,14 +141,14 @@ export async function test(
  * @description Compile your code
  * @param {string | Directory} src
  * @param {string} file
- * @param {string} output
+ * @param {string} outputBinary
  * @param {string} target
  * @returns {string}
  */
 export async function compile(
   src: string | Directory | undefined = ".",
   file = "main.ts",
-  output = "main",
+  outputBinary = "main",
   target = "x86_64-unknown-linux-gnu"
 ): Promise<File | string> {
   let id = "";
@@ -159,7 +159,7 @@ export async function compile(
       "compile",
       "-A",
       "--output",
-      output,
+      outputBinary,
       "--target",
       Deno.env.get("TARGET") || target,
       file,
@@ -180,23 +180,23 @@ export async function compile(
       .withExec([
         "tar",
         "czvf",
-        `/assets/${output}_${Deno.env.get("TAG") || ""}_${
+        `/assets/${outputBinary}_${Deno.env.get("TAG") || ""}_${
           Deno.env.get("TARGET") || target
         }.tar.gz`,
-        output,
+        outputBinary,
       ])
       .withExec([
         "sh",
         "-c",
-        `shasum -a 256 /assets/${output}_${Deno.env.get("TAG") || ""}_${
+        `shasum -a 256 /assets/${outputBinary}_${Deno.env.get("TAG") || ""}_${
           Deno.env.get("TARGET") || target
-        }.tar.gz > /assets/${output}_${
+        }.tar.gz > /assets/${outputBinary}_${
           Deno.env.get("TAG") || ""
         }_${Deno.env.get("TARGET" || target)}.tar.gz.sha256`,
       ]);
 
-    const exe = await ctr.file(`/app/${output}`);
-    exe.export(`./${output}`);
+    const exe = await ctr.file(`/app/${outputBinary}`);
+    exe.export(`./${outputBinary}`);
 
     await ctr.stdout();
     id = await exe.id();
