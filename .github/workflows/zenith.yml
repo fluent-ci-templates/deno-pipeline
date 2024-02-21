@@ -18,7 +18,7 @@ jobs:
           dagger version
       - name: Run Dagger Pipelines
         run: |
-          dagger query --doc lint.gql
-          dagger query --doc fmt.gql
-          dagger query --doc compile.gql
+          dagger call lint --src .
+          dagger call fmt --src .
+          dagger call compile --src . --file main.ts --target x86_64-unknown-linux-gnu --output-binary hello
         working-directory: example
