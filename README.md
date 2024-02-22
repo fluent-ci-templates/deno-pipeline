@@ -39,7 +39,7 @@ fluentci run .
 Use as a [Dagger](https://dagger.io) module:
 
 ```bash
-dagger mod install github.com/fluent-ci-templates/deno-pipeline@mod
+dagger install github.com/fluent-ci-templates/deno-pipeline@mod
 ```
 
 ## Environment variables (Deno Deploy)
