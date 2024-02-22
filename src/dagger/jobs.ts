@@ -1,6 +1,6 @@
 /**
  * @module deno
- * @description This module provides a set of functions to run common tasks for Deno projects.
+ * @description This module provides a set of functions to run common tasks for Deno projects 🦕
  */
 
 import Client, { Directory, Secret, File } from "../../deps.ts";
