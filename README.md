@@ -5,8 +5,6 @@
 ![deno compatibility](https://shield.deno.dev/deno/^1.37)
 [![](https://img.shields.io/codecov/c/gh/fluent-ci-templates/deno-pipeline)](https://codecov.io/gh/fluent-ci-templates/deno-pipeline)
 
-[![CodeSee](https://codesee-docs.s3.amazonaws.com/badge.svg?)](https://app.codesee.io/maps/public/d933e050-c5a7-11ee-b3d5-db051da2172a)
-
 
 A ready-to-use CI/CD Pipeline for your Deno projects.
 
@@ -39,7 +37,33 @@ fluentci run .
 Use as a [Dagger](https://dagger.io) module:
 
 ```bash
-dagger install github.com/fluent-ci-templates/deno-pipeline@mod
+dagger install github.com/fluent-ci-templates/deno-pipeline@main
+```
+
+Call functions from the module:
+
+```bash
+# Format
+dagger call fmt --src .
+
+# Lint
+dagger call lint --src .
+
+# Test
+dagger call test --src . 
+
+# Compile
+dagger call compile --src . \
+  --file main.ts \
+  --output-binary main \
+  --target x86_64-unknown-linux-gnu
+
+# Deploy
+dagger call deploy --src . \
+  --token $DENO_DEPLOY_TOKEN \
+  --project $DENO_PROJECT \
+  --main main.tsx \
+  --no-static false
 ```
 
 ## Environment variables (Deno Deploy)
