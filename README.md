@@ -2,8 +2,9 @@
 
 [![fluentci pipeline](https://img.shields.io/badge/dynamic/json?label=pkg.fluentci.io&labelColor=%23000&color=%23460cf1&url=https%3A%2F%2Fapi.fluentci.io%2Fv1%2Fpipeline%2Fdeno_pipeline&query=%24.version)](https://pkg.fluentci.io/deno_pipeline)
 [![deno module](https://shield.deno.dev/x/deno_pipeline)](https://deno.land/x/deno_pipeline)
-![deno compatibility](https://shield.deno.dev/deno/^1.37)
-[![dagger-min-version](https://img.shields.io/badge/dagger-v0.10.0-blue?color=3D66FF&labelColor=000000)](https://dagger.io)
+![deno compatibility](https://shield.deno.dev/deno/^1.41)
+[![dagger-min-version](https://img.shields.io/badge/dagger%20version-v0.10.0-blue?color=3D66FF)](https://dagger.io)
+[![ci](https://github.com/fluent-ci-templates/deno-pipeline/actions/workflows/ci.yml/badge.svg)](https://github.com/fluent-ci-templates/deno-pipeline/actions/workflows/ci.yml)
 
 A ready-to-use CI/CD Pipeline for your Deno projects.
 
@@ -31,7 +32,7 @@ Now you can run the pipeline with:
 fluentci run .
 ```
 
-## Dagger Module
+## 🧩 Dagger Module
 
 Use as a [Dagger](https://dagger.io) module:
 
@@ -65,7 +66,7 @@ dagger call deploy --src . \
   --no-static false
 ```
 
-## Environment variables (Deno Deploy)
+## 🛠️ Environment variables (Deno Deploy)
 
 | Variable          | Description               | Default    |
 | ----------------- | ------------------------- | ---------- |
@@ -75,7 +76,7 @@ dagger call deploy --src . \
 | DENO_DEPLOY_TOKEN | Your Deno Deploy token    |            |
 | DENO_MAIN_SCRIPT  | Your main script          | `main.tsx` |
 
-## Jobs
+## ✨ Jobs
 
 | Job     | Description                                               | Options                |
 | ------- | --------------------------------------------------------- | ---------------------- |
@@ -116,12 +117,12 @@ deploy(
 ): Promise<string>
 ```
 
-## Programmatic usage
+## 👨‍💻 Programmatic usage
 
 You can also use this pipeline programmatically:
 
 ```ts
-import { fmt, lint, test } from "https://deno.land/x/deno_pipeline/mod.ts";
+import { fmt, lint, test } from "jsr:@fluentci/deno";
 
 await fmt();
 await lint();

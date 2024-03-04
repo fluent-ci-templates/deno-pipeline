@@ -3,8 +3,7 @@
  * @description This module provides a set of functions to run common tasks for Deno projects 🦕
  */
 
-import { dag } from "../../sdk/client.gen.ts";
-import { Directory, Secret, File } from "../../deps.ts";
+import { dag, env, exit, Directory, Secret, File } from "../../deps.ts";
 import { existsSync } from "node:fs";
 import { getDirectory, getDenoDeployToken } from "./lib.ts";
 
@@ -28,6 +27,8 @@ const baseCtr = (pipeline: string) => {
 };
 
 /**
+ * Lint your code
+ *
  * @function
  * @description Lint your code
  * @param {string | Directory} src
@@ -57,6 +58,8 @@ export async function lint(
 }
 
 /**
+ * Format your code
+ *
  * @function
  * @description Format your code
  * @param {string | Directory} src
@@ -85,6 +88,7 @@ export async function fmt(
 }
 
 /**
+ * Run your tests
  * @function
  * @description Run your tests
  * @param {string | Directory} src
@@ -125,6 +129,8 @@ export async function test(
 }
 
 /**
+ * Compile your code
+ *
  * @function
  * @description Compile your code
  * @param {string | Directory} src
@@ -147,7 +153,7 @@ export async function compile(
     "--output",
     outputBinary,
     "--target",
-    Deno.env.get("TARGET") || target,
+    env.get("TARGET") || target,
     file,
   ];
 
@@ -166,19 +172,19 @@ export async function compile(
     .withExec([
       "tar",
       "czvf",
-      `/assets/${outputBinary}_${Deno.env.get("TAG") || ""}_${
-        Deno.env.get("TARGET") || target
+      `/assets/${outputBinary}_${env.get("TAG") || ""}_${
+        env.get("TARGET") || target
       }.tar.gz`,
       outputBinary,
     ])
     .withExec([
       "sh",
       "-c",
-      `shasum -a 256 /assets/${outputBinary}_${Deno.env.get("TAG") || ""}_${
-        Deno.env.get("TARGET") || target
-      }.tar.gz > /assets/${outputBinary}_${
-        Deno.env.get("TAG") || ""
-      }_${Deno.env.get("TARGET" || target)}.tar.gz.sha256`,
+      `shasum -a 256 /assets/${outputBinary}_${env.get("TAG") || ""}_${
+        env.get("TARGET") || target
+      }.tar.gz > /assets/${outputBinary}_${env.get("TAG") || ""}_${env.get(
+        "TARGET" || target
+      )}.tar.gz.sha256`,
     ]);
 
   const exe = await ctr.file(`/app/${outputBinary}`);
@@ -189,6 +195,8 @@ export async function compile(
 }
 
 /**
+ * Deploy your code to Deno Deploy
+ *
  * @function
  * @description Deploy your code to Deno Deploy
  * @param {string | Directory} src
@@ -220,30 +228,29 @@ export async function deploy(
 
   let command = ["deployctl", "deploy"];
 
-  if (Deno.env.get("NO_STATIC") || noStatic) {
+  if (env.get("NO_STATIC") || noStatic) {
     command = command.concat(["--no-static"]);
   }
 
-  if (Deno.env.get("EXCLUDE") || excludeOpt) {
-    command = command.concat([
-      `--exclude=${Deno.env.get("EXCLUDE") || excludeOpt}`,
-    ]);
+  if (env.get("EXCLUDE") || excludeOpt) {
+    command = command.concat([`--exclude=${env.get("EXCLUDE") || excludeOpt}`]);
   }
 
   const secret = await getDenoDeployToken(token);
 
   if (!secret) {
     console.error("DENO_DEPLOY_TOKEN environment variable is not set");
-    Deno.exit(1);
+    exit(1);
+    return "";
   }
 
   if (!project) {
     throw new Error("DENO_PROJECT environment variable is not set");
   }
 
-  const script = Deno.env.get("DENO_MAIN_SCRIPT") || "main.tsx";
+  const script = env.get("DENO_MAIN_SCRIPT") || "main.tsx";
   command = command.concat([
-    `--project=${Deno.env.get("DENO_PROJECT") || project}`,
+    `--project=${env.get("DENO_PROJECT") || project}`,
     script,
   ]);
 
@@ -266,7 +273,7 @@ export async function deploy(
     .withSecretVariable("DENO_DEPLOY_TOKEN", secret)
     .withEnvVariable(
       "DENO_MAIN_SCRIPT",
-      Deno.env.get("DENO_MAIN_SCRIPT") || main || "main.tsx"
+      env.get("DENO_MAIN_SCRIPT") || main || "main.tsx"
     )
     .withExec(installDeployCtl)
     .withExec(command);

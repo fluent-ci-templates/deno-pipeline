@@ -1,5 +1,11 @@
-import { dag } from "../../sdk/client.gen.ts";
-import { Directory, DirectoryID, Secret, SecretID } from "../../deps.ts";
+import {
+  dag,
+  env,
+  Directory,
+  DirectoryID,
+  Secret,
+  SecretID,
+} from "../../deps.ts";
 
 export const getDirectory = async (
   src: string | Directory | undefined = "."
@@ -24,11 +30,8 @@ export const getDirectory = async (
 };
 
 export const getDenoDeployToken = async (token?: string | Secret) => {
-  if (Deno.env.get("DENO_DEPLOY_TOKEN")) {
-    return dag.setSecret(
-      "DENO_DEPLOY_TOKEN",
-      Deno.env.get("DENO_DEPLOY_TOKEN")!
-    );
+  if (env.get("DENO_DEPLOY_TOKEN")) {
+    return dag.setSecret("DENO_DEPLOY_TOKEN", env.get("DENO_DEPLOY_TOKEN")!);
   }
   if (token && typeof token === "string") {
     try {
