@@ -4,6 +4,7 @@
 [![deno module](https://shield.deno.dev/x/deno_pipeline)](https://deno.land/x/deno_pipeline)
 ![deno compatibility](https://shield.deno.dev/deno/^1.41)
 [![dagger-min-version](https://img.shields.io/badge/dagger%20version-v0.10.0-blue?color=3D66FF)](https://dagger.io)
+[![](https://jsr.io/badges/@fluentci/deno)](https://jsr.io/@fluentci/deno)
 [![ci](https://github.com/fluent-ci-templates/deno-pipeline/actions/workflows/ci.yml/badge.svg)](https://github.com/fluent-ci-templates/deno-pipeline/actions/workflows/ci.yml)
 
 A ready-to-use CI/CD Pipeline for your Deno projects.
