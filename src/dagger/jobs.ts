@@ -244,7 +244,7 @@ export async function deploy(
     return "";
   }
 
-  if (!project) {
+  if (!env.get("DENO_PROJECT") && !project) {
     throw new Error("DENO_PROJECT environment variable is not set");
   }
 
