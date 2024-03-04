@@ -60,7 +60,7 @@ dagger call compile --src . \
 
 # Deploy
 dagger call deploy --src . \
-  --token $DENO_DEPLOY_TOKEN \
+  --token DENO_DEPLOY_TOKEN \
   --project $DENO_PROJECT \
   --main main.tsx \
   --no-static false
