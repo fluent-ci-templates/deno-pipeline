@@ -6,7 +6,7 @@ pub fn fmt(args: String) -> FnResult<String> {
     let stdout = dag()
         .pipeline("fmt")?
         .pkgx()?
-        .with_exec(vec!["pkgx", "install", "deno"])?
+        .with_packages(vec!["deno"])?
         .with_exec(vec!["deno", "fmt", &args])?
         .stdout()?;
     Ok(stdout)
@@ -17,7 +17,7 @@ pub fn lint(args: String) -> FnResult<String> {
     let stdout = dag()
         .pipeline("lint")?
         .pkgx()?
-        .with_exec(vec!["pkgx", "install", "deno"])?
+        .with_packages(vec!["deno"])?
         .with_exec(vec!["deno", "lint", &args])?
         .stdout()?;
     Ok(stdout)
@@ -28,7 +28,7 @@ pub fn test(args: String) -> FnResult<String> {
     let stdout = dag()
         .pipeline("test")?
         .pkgx()?
-        .with_exec(vec!["pkgx", "install", "deno"])?
+        .with_packages(vec!["deno"])?
         .with_exec(vec!["deno", "test", "-A", &args])?
         .stdout()?;
     Ok(stdout)
@@ -39,7 +39,7 @@ pub fn compile(args: String) -> FnResult<String> {
     let stdout = dag()
         .pipeline("compile")?
         .pkgx()?
-        .with_exec(vec!["pkgx", "install", "deno"])?
+        .with_packages(vec!["deno"])?
         .with_exec(vec!["deno", "compile", &args])?
         .stdout()?;
     Ok(stdout)
@@ -50,7 +50,7 @@ pub fn deploy(args: String) -> FnResult<String> {
     let stdout = dag()
         .pipeline("deploy")?
         .pkgx()?
-        .with_exec(vec!["pkgx", "install", "deno"])?
+        .with_packages(vec!["deno"])?
         .with_exec(vec![
             "deno",
             "install",
@@ -70,7 +70,7 @@ pub fn publish(args: String) -> FnResult<String> {
     let stdout = dag()
         .pipeline("publish")?
         .pkgx()?
-        .with_exec(vec!["pkgx", "install", "deno"])?
+        .with_packages(vec!["deno"])?
         .with_exec(vec!["deno", "publish", &args])?
         .stdout()?;
     Ok(stdout)
