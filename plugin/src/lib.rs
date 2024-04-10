@@ -29,7 +29,25 @@ pub fn test(args: String) -> FnResult<String> {
         .pipeline("test")?
         .pkgx()?
         .with_packages(vec!["deno"])?
-        .with_exec(vec!["deno", "test", "-A", &args])?
+        .with_exec(vec![
+            "deno",
+            "test",
+            "-A",
+            "--coverage=coverage",
+            "--lock-write",
+            &args,
+        ])?
+        .stdout()?;
+    Ok(stdout)
+}
+
+#[plugin_fn]
+pub fn coverage() -> FnResult<String> {
+    let stdout = dag()
+        .pipeline("coverage")?
+        .pkgx()?
+        .with_packages(vec!["deno"])?
+        .with_exec(vec!["deno coverage ./coverage --lcov > coverage.lcov"])?
         .stdout()?;
     Ok(stdout)
 }

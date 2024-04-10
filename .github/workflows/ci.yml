@@ -17,7 +17,8 @@ jobs:
           pipeline: deno
           args: |
             fmt
-            test --coverage=coverage --lock-write
+            test
+            coverage
       - name: Run Dagger Pipelines
         run: |
           dagger -m github.com/fluent-ci-templates/deno-pipeline@main functions
