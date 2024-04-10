@@ -1,6 +1,7 @@
 # Deno Pipeline Example
 
-This is an example using the [Deno Pipeline](https://github.com/fluent-ci-templates/deno-pipeline).
+This is an example using the
+[Deno Pipeline](https://github.com/fluent-ci-templates/deno-pipeline).
 
 ## 🚀 Usage
 
