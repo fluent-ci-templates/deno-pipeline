@@ -2,6 +2,28 @@ use extism_pdk::*;
 use fluentci_pdk::dag;
 
 #[plugin_fn]
+pub fn task(args: String) -> FnResult<String> {
+    let stdout = dag()
+        .pipeline("task")?
+        .pkgx()?
+        .with_packages(vec!["deno"])?
+        .with_exec(vec!["deno", "task", &args])?
+        .stdout()?;
+    Ok(stdout)
+}
+
+#[plugin_fn]
+pub fn run(args: String) -> FnResult<String> {
+    let stdout = dag()
+        .pipeline("run")?
+        .pkgx()?
+        .with_packages(vec!["deno"])?
+        .with_exec(vec!["deno", "run", &args])?
+        .stdout()?;
+    Ok(stdout)
+}
+
+#[plugin_fn]
 pub fn fmt(args: String) -> FnResult<String> {
     let stdout = dag()
         .pipeline("fmt")?
