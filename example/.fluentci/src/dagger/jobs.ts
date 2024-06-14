@@ -3,7 +3,14 @@
  * @description This module provides a set of functions to run common tasks for Deno projects 🦕
  */
 
-import { dag, env, exit, Directory, Secret, File } from "../../deps.ts";
+import {
+  dag,
+  env,
+  exit,
+  type Directory,
+  type Secret,
+  type File,
+} from "../../deps.ts";
 import { existsSync } from "node:fs";
 import { getDirectory, getDenoDeployToken } from "./lib.ts";
 
@@ -18,10 +25,11 @@ export enum Job {
 export const exclude = [".git", ".devbox", ".fluentci"];
 
 const baseCtr = (pipeline: string) => {
+  const DENO_VERSION = env.get("DENO_VERSION") || "1.44.0";
   return dag
     .pipeline(pipeline)
     .container()
-    .from("denoland/deno:alpine")
+    .from(`denoland/deno:alpine-${DENO_VERSION}`)
     .withExec(["apk", "update"])
     .withExec(["apk", "add", "perl-utils"]);
 };

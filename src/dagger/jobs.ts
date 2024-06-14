@@ -3,7 +3,14 @@
  * @description This module provides a set of functions to run common tasks for Deno projects 🦕
  */
 
-import { dag, env, exit, Directory, Secret, File } from "../../deps.ts";
+import {
+  dag,
+  env,
+  exit,
+  type Directory,
+  type Secret,
+  type File,
+} from "../../deps.ts";
 import { existsSync } from "node:fs";
 import { getDirectory, getDenoDeployToken } from "./lib.ts";
 
@@ -18,17 +25,16 @@ export enum Job {
 export const exclude = [".git", ".devbox", ".fluentci"];
 
 const baseCtr = (pipeline: string) => {
+  const DENO_VERSION = env.get("DENO_VERSION") || "1.44.0";
   return dag
     .pipeline(pipeline)
     .container()
-    .from("denoland/deno:alpine")
+    .from(`denoland/deno:alpine-${DENO_VERSION}`)
     .withExec(["apk", "update"])
     .withExec(["apk", "add", "perl-utils"]);
 };
 
 /**
- * Lint your code
- *
  * @function
  * @description Lint your code
  * @param {string | Directory} src
@@ -58,8 +64,6 @@ export async function lint(
 }
 
 /**
- * Format your code
- *
  * @function
  * @description Format your code
  * @param {string | Directory} src
@@ -88,7 +92,6 @@ export async function fmt(
 }
 
 /**
- * Run your tests
  * @function
  * @description Run your tests
  * @param {string | Directory} src
@@ -129,8 +132,6 @@ export async function test(
 }
 
 /**
- * Compile your code
- *
  * @function
  * @description Compile your code
  * @param {string | Directory} src
@@ -195,8 +196,6 @@ export async function compile(
 }
 
 /**
- * Deploy your code to Deno Deploy
- *
  * @function
  * @description Deploy your code to Deno Deploy
  * @param {string | Directory} src
@@ -244,7 +243,7 @@ export async function deploy(
     return "";
   }
 
-  if (!env.get("DENO_PROJECT") && !project) {
+  if (!project) {
     throw new Error("DENO_PROJECT environment variable is not set");
   }
 

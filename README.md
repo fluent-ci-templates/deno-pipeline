@@ -76,6 +76,7 @@ dagger call deploy --src . \
 | EXCLUDE           | Exclude files from deploy |            |
 | DENO_DEPLOY_TOKEN | Your Deno Deploy token    |            |
 | DENO_MAIN_SCRIPT  | Your main script          | `main.tsx` |
+| DENO_VERSION      | Set deno version to use   | `1.44.0`   |
 
 ## ✨ Jobs
 
