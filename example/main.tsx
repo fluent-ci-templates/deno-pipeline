@@ -2,8 +2,7 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import html, { h } from "https://deno.land/x/htm@0.2.1/mod.ts";
 
-// deno-lint-ignore no-unused-vars
-const handler = (req: Request) =>
+const handler = () =>
   html({
     title: "Hello World!",
     styles: [
