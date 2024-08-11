@@ -10,9 +10,9 @@ import {
   type Directory,
   type Secret,
   type File,
-} from "../../deps.ts";
+} from "../deps.ts";
 import { existsSync } from "node:fs";
-import { getDirectory, getDenoDeployToken } from "./lib.ts";
+import { getDirectory, getDenoDeployToken } from "./helpers.ts";
 
 export enum Job {
   fmt = "fmt",

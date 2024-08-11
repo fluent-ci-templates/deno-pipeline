@@ -19,6 +19,7 @@
       "jsr:@tsirysndr/fluent-gh-actions@0.3": "jsr:@tsirysndr/fluent-gh-actions@0.3.0",
       "jsr:@tsirysndr/fluent-gitlab-ci@0.5": "jsr:@tsirysndr/fluent-gitlab-ci@0.5.0",
       "npm:@rgba-image/png": "npm:@rgba-image/png@0.1.1",
+      "npm:@types/node": "npm:@types/node@18.16.19",
       "npm:graphql-request@6.1.0": "npm:graphql-request@6.1.0_graphql@16.8.1",
       "npm:graphql@16.8.1": "npm:graphql@16.8.1",
       "npm:lodash@4.17.21": "npm:lodash@4.17.21",
@@ -153,6 +154,10 @@
       },
       "@types/lodash@4.14.202": {
         "integrity": "sha512-OvlIYQK9tNneDlS0VN54LLd5uiPCBOp7gS5Z0f1mjoJYBrtStzgmJBxONW3U6OZqdtNzZPmn9BS/7WI7BFFcFQ==",
+        "dependencies": {}
+      },
+      "@types/node@18.16.19": {
+        "integrity": "sha512-IXl7o+R9iti9eBW4Wg2hx1xQDig183jj7YLn8F7udNceyfkbn1ZxmzZXuak20gR40D7pIkIY1kYGx5VIGbaHKA==",
         "dependencies": {}
       },
       "cross-fetch@3.1.8": {
