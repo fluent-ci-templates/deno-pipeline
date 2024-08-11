@@ -1,6 +1,6 @@
 {
   "name": "@fluentci/deno",
-  "version": "0.10.3",
+  "version": "0.11.0",
   "exports": "./mod.ts",
   "importMap": "import_map.json",
   "tasks": {
