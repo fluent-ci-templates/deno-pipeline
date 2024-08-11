@@ -5,4 +5,4 @@ authors = [
 description = "CI/CD Plugin for Deno"
 license = "MIT"
 name = "deno"
-version = "0.10.3"
+version = "0.11.0"
