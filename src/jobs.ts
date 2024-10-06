@@ -24,10 +24,9 @@ export enum Job {
 
 export const exclude = [".git", ".devbox", ".fluentci"];
 
-const baseCtr = (pipeline: string) => {
+const baseCtr = () => {
   const DENO_VERSION = env.get("DENO_VERSION") || "1.44.0";
   return dag
-    .pipeline(pipeline)
     .container()
     .from(`denoland/deno:alpine-${DENO_VERSION}`)
     .withExec(["apk", "update"])
@@ -50,7 +49,7 @@ export async function lint(
     command = ["sh", "-c", `devbox run -- ${command.join(" ")}`];
   }
 
-  const ctr = baseCtr(Job.lint)
+  const ctr = baseCtr()
     .withDirectory("/app", context, {
       exclude,
     })
@@ -79,7 +78,7 @@ export async function fmt(
     command = ["sh", "-c", `devbox run -- ${command.join(" ")}`];
   }
 
-  const ctr = baseCtr(Job.fmt)
+  const ctr = baseCtr()
     .withDirectory("/app", context, {
       exclude,
     })
@@ -113,7 +112,7 @@ export async function test(
     command = ["sh", "-c", `devbox run -- ${command.join(" ")}`];
   }
 
-  const ctr = baseCtr(Job.test)
+  const ctr = baseCtr()
     .from("denoland/deno:alpine")
     .withDirectory("/app", context, {
       exclude,
@@ -162,7 +161,7 @@ export async function compile(
     command = ["sh", "-c", `devbox run -- ${command.join(" ")}`];
   }
 
-  const ctr = baseCtr(Job.fmt)
+  const ctr = baseCtr()
     .withMountedCache("/assets", dag.cacheVolume("gh-release-assets"))
     .withDirectory("/app", context, {
       exclude,
@@ -262,7 +261,7 @@ export async function deploy(
     ];
   }
 
-  const ctr = baseCtr(Job.deploy)
+  const ctr = baseCtr()
     .from("denoland/deno:alpine")
     .withDirectory("/app", context, {
       exclude,
