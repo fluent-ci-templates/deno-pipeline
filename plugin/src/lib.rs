@@ -91,16 +91,7 @@ pub fn deploy(args: String) -> FnResult<String> {
         .pipeline("deploy")?
         .pkgx()?
         .with_packages(vec!["deno"])?
-        .with_exec(vec![
-            "deno",
-            "install",
-            "--allow-all",
-            "--no-check",
-            "-r",
-            "-f",
-            "--global",
-            "https://deno.land/x/deploy/deployctl.ts",
-        ])?
+        .with_exec(vec!["deno", "install", "-gArf", "jsr:@deno/deployctl"])?
         .with_exec(vec!["deployctl", "deploy", &args])?
         .stdout()?;
     Ok(stdout)
