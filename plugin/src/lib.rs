@@ -98,6 +98,7 @@ pub fn deploy(args: String) -> FnResult<String> {
             "--no-check",
             "-r",
             "-f",
+            "--global",
             "https://deno.land/x/deploy/deployctl.ts",
         ])?
         .with_exec(vec!["deployctl", "deploy", &args])?
