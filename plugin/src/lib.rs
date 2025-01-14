@@ -56,7 +56,6 @@ pub fn test(args: String) -> FnResult<String> {
             "test",
             "-A",
             "--coverage=coverage",
-            "--lock-write",
             &args,
         ])?
         .stdout()?;
